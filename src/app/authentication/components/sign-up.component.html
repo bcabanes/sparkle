@@ -1,0 +1,29 @@
+<h2>Sign Up</h2>
+<form [formGroup]="signUpForm" (ngSubmit)="signIn()">
+  <div class="form-group form-authentication">
+    <div class="input">
+      <md-input-container class="email-input">
+        <input mdInput
+               [formControl]="signUpForm.controls.email"
+               type="text"
+               placeholder="Your email">
+      </md-input-container>
+    </div>
+    <!-- /.input -->
+
+    <div class="input">
+      <md-input-container class="password-input">
+        <input mdInput
+               [formControl]="signUpForm.controls.password"
+               type="password"
+               placeholder="Your password">
+      </md-input-container>
+    </div>
+    <!-- /.input -->
+
+    <div class="form-btn">
+      <a (click)="router.navigate(['auth', 'sign-in'])" md-button>Already have an account?</a>
+      <button type="submit" md-button>Sign up</button>
+    </div>
+  </div>
+</form>
