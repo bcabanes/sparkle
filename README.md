@@ -1,4 +1,6 @@
-## Sparkle
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+
+# Sparkle
 This project uses [Angular](https://angular.io/), [Webpack](https://webpack.github.io/) and the [angular-cli](https://github.com/angular/angular-cli).
 
 ## Requirements
