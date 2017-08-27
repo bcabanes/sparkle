@@ -3,7 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
 import { StoreModule } from '@ngrx/store';
-import { appReducer } from './ngrx/app.reducer';
+import { appReducer, metaReducers } from './ngrx/app.reducer';
 import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
@@ -37,7 +37,7 @@ import { SharedModule } from './shared/shared.module';
     /**
      * NGRX modules
      */
-    StoreModule.forRoot(appReducer),
+    StoreModule.forRoot(appReducer, { metaReducers }),
     StoreRouterConnectingModule,
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     EffectsModule.forRoot([]),
