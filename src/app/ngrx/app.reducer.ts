@@ -10,7 +10,7 @@ export const appReducer: ActionReducerMap<IAppState> = {
 /**
  * Console log all actions while in development mode.
  */
-function logger(reducer: ActionReducer<IAppState>): ActionReducer<IAppState> {
+export function logger(reducer: ActionReducer<IAppState>): ActionReducer<IAppState> {
   return (state: IAppState, action: any) => {
     console.log('state', state);
     console.log('action', action);

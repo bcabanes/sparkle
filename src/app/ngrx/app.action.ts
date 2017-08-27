@@ -1,6 +1,11 @@
 import { Action } from '@ngrx/store';
 import { RouterReducerState } from '@ngrx/router-store';
 import { type } from '../shared/helpers/type';
+import { RouterStateUrl } from '../shared/helpers/custom-router-state-serializer';
+
+export interface IAppState {
+  router: RouterReducerState<RouterStateUrl>;
+}
 
 export namespace AppActions {
   const CATEGORY = 'App';
@@ -19,8 +24,4 @@ export namespace AppActions {
   }
 
   export type Actions = NoopAction;
-}
-
-export interface IAppState {
-  router: RouterReducerState;
 }
