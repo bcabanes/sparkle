@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+// app
+import { IAppState } from '../../ngrx/app.action';
+import { UserActions } from '../../user/ngrx/user.action';
 
 @Component({
   selector   : 'app-sign-up',
@@ -9,7 +13,9 @@ import { Router } from '@angular/router';
 export class SignUpComponent implements OnInit {
   signUpForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, public router: Router) {
+  constructor(private formBuilder: FormBuilder,
+              public router: Router,
+              private store: Store<IAppState>) {
   }
 
   ngOnInit() {
@@ -18,12 +24,15 @@ export class SignUpComponent implements OnInit {
 
   private createSignUpForm() {
     this.signUpForm = this.formBuilder.group({
-      email   : [ '', Validators.required, Validators.email ],
-      password: [ '', Validators.required, Validators.minLength(6) ]
+      email   : [ '', [ Validators.required, Validators.email ] ],
+      password: [ '', [ Validators.required, Validators.minLength(6) ] ]
     });
   }
 
   public signUp() {
-    // this.store.dispatch();
+    this.store.dispatch(new UserActions.SignUpAction({
+      email   : this.signUpForm.value.email,
+      password: this.signUpForm.value.password
+    }));
   }
 }

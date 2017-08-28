@@ -10,6 +10,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { CustomRouterStateSerializer } from './shared/helpers/custom-router-state-serializer';
 
 import { AngularFireModule } from 'angularfire2';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -18,7 +19,8 @@ import { LAYOUTS_COMPONENTS } from './layouts/index';
 
 import { environment } from '../environments/environment'; // Only dev for now.
 
-import { SharedModule } from './shared/shared.module';
+import { SharedModule } from './shared';
+import { UserModule } from './user';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,11 @@ import { SharedModule } from './shared/shared.module';
 
     AppRoutingModule,
 
+    /**
+     * Firebase modules
+     */
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
     AngularFireDatabaseModule,
 
     /**
@@ -45,6 +51,7 @@ import { SharedModule } from './shared/shared.module';
     /**
      * App Modules
      */
+    UserModule,
     SharedModule
   ],
   providers   : [

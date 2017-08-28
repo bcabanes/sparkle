@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+// app
+import { IAppState } from '../../ngrx/app.action';
+import { UserActions } from '../../user/ngrx/user.action';
 
 @Component({
   selector   : 'app-sign-in',
@@ -9,7 +13,9 @@ import { Router } from '@angular/router';
 export class SignInComponent implements OnInit {
   signInForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, public router: Router) {
+  constructor(private formBuilder: FormBuilder,
+              public router: Router,
+              private store: Store<IAppState>) {
   }
 
   ngOnInit() {
@@ -18,12 +24,15 @@ export class SignInComponent implements OnInit {
 
   private createSignInForm() {
     this.signInForm = this.formBuilder.group({
-      email   : [ '', Validators.required, Validators.email ],
-      password: [ '', Validators.required ]
+      email   : [ '', [ Validators.required, Validators.email ] ],
+      password: [ '', [ Validators.required ] ]
     });
   }
 
   public signIn() {
-    // this.store.dispatch();
+    this.store.dispatch(new UserActions.SignInEmailAction({
+        email   : this.signInForm.value.email,
+        password: this.signInForm.value.password
+      }));
   }
 }
