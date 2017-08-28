@@ -6,12 +6,14 @@ import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/withLatestFrom';
 // app
 import { UserActions } from './user.action';
 import { UserService } from '../user.service';
 import { User } from './user.state';
+import { AppActions } from '../../ngrx/app.action';
 
 @Injectable()
 export class UserEffects {
@@ -33,17 +35,8 @@ export class UserEffects {
       UserActions.ActionTypes.SIGN_IN_SUCCESS,
       UserActions.ActionTypes.SIGN_UP_SUCCESS)
     .map((action: UserActions.SignInSuccessAction) => {
-      const user: User = {
-        displayName  : action.payload.displayName,
-        email        : action.payload.email,
-        emailVerified: action.payload.emailVerified,
-        phoneNumber  : action.payload.phoneNumber,
-        photoURL     : action.payload.photoURL,
-        providerId   : action.payload.providerId,
-        uid          : action.payload.uid,
-        isAnonymous  : action.payload.isAnonymous,
-      };
-      return new UserActions.ChangedAction({ current: user, errors: [] });
+      const user: User = new User(action.payload);
+      return new UserActions.ChangedAction({ current: user.serialize(), errors: [] });
     });
 
   @Effect() signUp$: Observable<Action> = this.actions$
@@ -65,6 +58,19 @@ export class UserEffects {
     .map(([ action, state ]) => new UserActions.ChangedAction({
       errors: [ action.payload, ...(state.errors || []) ]
     }));
+
+  @Effect() init$: Observable<Action> = this.actions$
+    .ofType<UserActions.InitAction>(UserActions.ActionTypes.INIT)
+    .startWith(new UserActions.InitAction())
+    .switchMap((action: UserActions.InitAction) =>
+      this.userService.getCurrentUser()
+        .map((firebaseUser) => {
+          if (!firebaseUser) {
+            return new AppActions.NoopAction(); // Do nothing.
+          }
+          const user: User = new User(firebaseUser);
+          return new UserActions.ChangedAction({ current: user.serialize(), errors: [] });
+        }));
 
   constructor(private actions$: Actions,
               private store: Store<any>,

@@ -9,6 +9,7 @@ export namespace UserActions {
   export interface IUserActions {
     API_ERROR: string;
     CHANGED: string;
+    INIT: string;
     SIGN_IN_EMAIL: string;
     SIGN_IN_SOCIAL: string;
     SIGN_IN_SUCCESS: string;
@@ -24,6 +25,7 @@ export namespace UserActions {
   export const ActionTypes: IUserActions = {
     API_ERROR       : type(`${CATEGORY} Api Error`),
     CHANGED         : type(`${CATEGORY} Changed`),
+    INIT: type(`${CATEGORY} Initialization`),
     SIGN_IN_EMAIL   : type(`${CATEGORY} Sign in with email`),
     SIGN_IN_FAILURE : type(`${CATEGORY} Sign in Failure`),
     SIGN_IN_SUCCESS : type(`${CATEGORY} Sign in Success`),
@@ -60,6 +62,11 @@ export namespace UserActions {
      */
     constructor(public payload: UserState.IState) {
     }
+  }
+
+  export class InitAction implements Action {
+    type = ActionTypes.INIT;
+    payload: string = null;
   }
 
   /**
@@ -126,6 +133,7 @@ export namespace UserActions {
   export type Actions =
     ApiErrorAction |
     ChangedAction |
+    InitAction |
     SignInEmailAction |
     SignInFailureAction |
     SignInSuccessAction |
