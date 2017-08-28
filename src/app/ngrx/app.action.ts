@@ -1,8 +1,7 @@
 import { Action } from '@ngrx/store';
 import { RouterReducerState } from '@ngrx/router-store';
 // app
-import { type } from '../shared/helpers/type';
-import { RouterStateUrl } from '../shared/helpers/custom-router-state-serializer';
+import { RouterStateUrl, type } from '../shared';
 
 export interface IAppState {
   router: RouterReducerState<RouterStateUrl>;
