@@ -12,7 +12,7 @@ import 'rxjs/add/operator/withLatestFrom';
 // app
 import { UserActions } from './user.action';
 import { UserService } from '../user.service';
-import { User } from './user.state';
+import { User } from '../user.model';
 import { AppActions } from '../../ngrx/app.action';
 
 @Injectable()
