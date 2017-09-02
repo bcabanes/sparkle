@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
+import { Action, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
 // app
 import { DeckService } from '../deck.service';
 import { DeckActions } from './deck.action';
 import { Deck, IDeck } from '../deck.model';
-import { Action, Store } from '@ngrx/store';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @Injectable()
 export class DeckEffects {
@@ -27,27 +29,25 @@ export class DeckEffects {
     .map((action: DeckActions.CreateDeckSuccessAction) => {
       const deck = new Deck(action.payload);
       return new DeckActions.ChangedAction({ current: deck.serialize(), errors: [] });
-    });
+    })
+    .do(data => new DeckActions.LoadDeckListAction());
 
   @Effect() deleteDeck$: Observable<Action> = this.actions$
     .ofType<DeckActions.DeleteDeckAction>(DeckActions.ActionTypes.DELETE_DECK)
     .switchMap((action: DeckActions.DeleteDeckAction) =>
       Observable.fromPromise(this.deckService.deleteDeck(action.payload))
-        .map(data => new DeckActions.DeleteDeckSuccessAction(action.payload.userUid))
+        .map(data => new DeckActions.DeleteDeckSuccessAction())
         .catch(error => Observable.of(new DeckActions.DeleteDeckFailureAction(error))));
 
   @Effect() deleteDeckSuccess$: Observable<Action> = this.actions$
     .ofType<DeckActions.DeleteDeckSuccessAction>(DeckActions.ActionTypes.DELETE_DECK_SUCCESS)
     .map((action: DeckActions.DeleteDeckSuccessAction) =>
-      new DeckActions.LoadDeckListAction(action.payload));
+      new DeckActions.LoadDeckListAction());
 
   @Effect() loadDeck$: Observable<Action> = this.actions$
     .ofType<DeckActions.LoadDeckAction>(DeckActions.ActionTypes.LOAD_DECK)
     .switchMap((action: DeckActions.LoadDeckAction) => {
-      return this.deckService.getDeck({
-        deckUid: action.payload.deckUid,
-        userUid: action.payload.userUid
-      })
+      return this.deckService.getDeck(action.payload)
         .map((deck: IDeck) => new DeckActions.LoadDeckSuccessAction(deck))
         .catch(error => Observable.of(new DeckActions.LoadDeckFailureAction(error)));
     });
@@ -62,7 +62,7 @@ export class DeckEffects {
   @Effect() loadDeckList$: Observable<Action> = this.actions$
     .ofType<DeckActions.LoadDeckListAction>(DeckActions.ActionTypes.LOAD_DECK_LIST)
     .switchMap((action: DeckActions.LoadDeckListAction) => {
-      return this.deckService.getDeckList(action.payload)
+      return this.deckService.getDeckList()
         .map((deckList: IDeck[]) => new DeckActions.LoadDeckListSuccessAction(deckList))
         .catch(error => Observable.of(new DeckActions.LoadDeckListFailureAction(error)));
     });
@@ -95,6 +95,7 @@ export class DeckEffects {
 
 
   constructor(private actions$: Actions,
+              private afAuth: AngularFireAuth,
               private deckService: DeckService,
               private store: Store<any>) {}
 }

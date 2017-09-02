@@ -17,7 +17,7 @@ export class DashboardComponent implements OnInit {
   constructor(private store: Store<IAppState>) {}
 
   ngOnInit() {
-    this.store.dispatch(new DeckActions.LoadDeckListAction('oEidve0LWFOIVSm6q7BH7gkH4Lo1'));
+    this.store.dispatch(new DeckActions.LoadDeckListAction());
     this.deckList$ = this.store.select(s => s.deck.list);
   }
 
@@ -27,16 +27,10 @@ export class DashboardComponent implements OnInit {
       content: `Deck content ${(Math.random() * 100).toFixed()}`,
       type: 'card'
     });
-    this.store.dispatch(new DeckActions.CreateDeckAction({
-      deck: deck.serialize(),
-      userUid: 'oEidve0LWFOIVSm6q7BH7gkH4Lo1'
-    }));
+    this.store.dispatch(new DeckActions.CreateDeckAction(deck.serialize()));
   }
 
   public deleteDeck(deckUid) {
-    this.store.dispatch(new DeckActions.DeleteDeckAction({
-      deckUid,
-      userUid: 'oEidve0LWFOIVSm6q7BH7gkH4Lo1'
-    }));
+    this.store.dispatch(new DeckActions.DeleteDeckAction(deckUid));
   }
 }

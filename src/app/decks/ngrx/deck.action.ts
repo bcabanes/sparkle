@@ -81,9 +81,9 @@ export namespace DeckActions {
 
     /**
      *
-     * @param {DeckState.IState} payload
+     * @param {IDeck} payload
      */
-    constructor(public payload: { deck: IDeck, userUid: string }) {
+    constructor(public payload: IDeck) {
     }
   }
 
@@ -117,9 +117,9 @@ export namespace DeckActions {
 
     /**
      *
-     * @param {{deckUid: string; userUid: string}} payload
+     * @param {string} payload
      */
-    constructor(public payload: { deckUid: string, userUid: string }) {
+    constructor(public payload: string) {
     }
   }
 
@@ -136,13 +136,7 @@ export namespace DeckActions {
 
   export class DeleteDeckSuccessAction implements Action {
     type = ActionTypes.DELETE_DECK_SUCCESS;
-
-    /**
-     *
-     * @param {string} payload
-     */
-    constructor(public payload: string ) {
-    }
+    payload: string = null;
   }
 
   /**
@@ -153,9 +147,9 @@ export namespace DeckActions {
 
     /**
      *
-     * @param {{deckUid: string; userUid: string}} payload
+     * @param {string} payload
      */
-    constructor(public payload: { deckUid: string, userUid: string }) {
+    constructor(public payload: string) {
     }
   }
 
@@ -183,13 +177,7 @@ export namespace DeckActions {
 
   export class LoadDeckListAction implements Action {
     type = ActionTypes.LOAD_DECK_LIST;
-
-    /**
-     *
-     * @param {string} payload
-     */
-    constructor(public payload: string ) {
-    }
+    payload: string = null;
   }
 
   export class LoadDeckListFailureAction implements Action {

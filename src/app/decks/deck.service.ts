@@ -6,32 +6,34 @@ import {
 } from 'angularfire2/database';
 import * as firebase from 'firebase';
 import { IDeck } from './deck.model';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @Injectable()
 export class DeckService {
 
-  constructor(private db: AngularFireDatabase) {
+  constructor(private afAuth: AngularFireAuth,
+              private db: AngularFireDatabase) {
   }
 
-  public createDeck(params: { deck: IDeck, userUid: string }): any {
-    return this.db.list(`${params.userUid}/decks/`).push(params.deck)
+  public createDeck(deck: IDeck): any {
+    return this.db.list(`${this.afAuth.auth.currentUser.uid}/decks/`).push(deck)
       .then(data => {
         return {
-          ...params.deck,
+          ...deck,
           uid: data.key
         } as IDeck;
       });
   }
 
-  public getDeckList(userUid: string): FirebaseListObservable<IDeck[]> {
-    return this.db.list(`${userUid}/decks/`);
+  public getDeckList(): FirebaseListObservable<IDeck[]> {
+    return this.db.list(`${this.afAuth.auth.currentUser.uid}/decks/`);
   }
 
-  public getDeck(params: { deckUid: string, userUid: string }): FirebaseObjectObservable<IDeck> {
-    return this.db.object(`${params.userUid}/decks/${params.deckUid}`);
+  public getDeck(deckUid: string): FirebaseObjectObservable<IDeck> {
+    return this.db.object(`${this.afAuth.auth.currentUser.uid}/decks/${deckUid}`);
   }
 
-  public deleteDeck(params: { deckUid: string, userUid: string }): any {
-    return this.db.list(`${params.userUid}/decks`).remove(params.deckUid);
+  public deleteDeck(deckUid: string): any {
+    return this.db.list(`${this.afAuth.auth.currentUser.uid}/decks`).remove(deckUid);
   }
 }
