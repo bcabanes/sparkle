@@ -2,9 +2,13 @@ import { Action } from '@ngrx/store';
 import { RouterReducerState } from '@ngrx/router-store';
 // app
 import { RouterStateUrl, type } from '../shared';
+import { UserState } from '../user/ngrx';
+import { DeckState } from '../decks/ngrx/deck.state';
 
 export interface IAppState {
+  deck: DeckState.IState;
   router: RouterReducerState<RouterStateUrl>;
+  user: UserState.IState;
 }
 
 export namespace AppActions {

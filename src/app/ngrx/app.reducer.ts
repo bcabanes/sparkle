@@ -3,9 +3,13 @@ import { routerReducer } from '@ngrx/router-store';
 // app
 import { IAppState } from './app.action';
 import { environment } from '../../environments/environment';
+import { deckReducer } from '../decks/ngrx/deck.reducer';
+import { userReducer } from '../user/ngrx/user.reducer';
 
 export const appReducer: ActionReducerMap<IAppState> = {
-  router: routerReducer
+  deck: deckReducer,
+  router: routerReducer,
+  user: userReducer,
 };
 
 /**

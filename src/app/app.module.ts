@@ -21,6 +21,7 @@ import { environment } from '../environments/environment'; // Only dev for now.
 
 import { SharedModule } from './shared';
 import { UserModule } from './user';
+import { DeckModule } from './decks';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { UserModule } from './user';
     /**
      * App Modules
      */
+    DeckModule,
     UserModule,
     SharedModule
   ],
