@@ -5,9 +5,11 @@ import { IAppState } from './app.action';
 import { environment } from '../../environments/environment';
 import { deckReducer } from '../decks/ngrx/deck.reducer';
 import { userReducer } from '../user/ngrx/user.reducer';
+import { cardReducer } from '../cards/ngrx/card.reducer';
 
 export const appReducer: ActionReducerMap<IAppState> = {
   deck: deckReducer,
+  card: cardReducer,
   router: routerReducer,
   user: userReducer,
 };

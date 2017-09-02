@@ -4,9 +4,11 @@ import { RouterReducerState } from '@ngrx/router-store';
 import { RouterStateUrl, type } from '../shared';
 import { UserState } from '../user/ngrx';
 import { DeckState } from '../decks/ngrx/deck.state';
+import { CardState } from '../cards/ngrx/card.state';
 
 export interface IAppState {
   deck: DeckState.IState;
+  card: CardState.IState;
   router: RouterReducerState<RouterStateUrl>;
   user: UserState.IState;
 }

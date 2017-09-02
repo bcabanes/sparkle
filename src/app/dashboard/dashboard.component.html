@@ -3,11 +3,15 @@
 <div *ngFor="let deck of deckList$ | async">
   <pre>{{ deck | json }}</pre>
   <button (click)="deleteDeck(deck.uid)" md-button>DELETE</button>
-  <hr>
 </div>
-<pre>
-  {{ (deckList | async) | json }}
-</pre>
+<hr>
+<h3>Card list</h3>
+<div *ngFor="let card of cardList$ | async">
+  <pre>{{ card | json }}</pre>
+  <button (click)="deleteCard(card.uid)" md-button>DELETE</button>
+</div>
 <hr>
 <h3>Create deck</h3>
 <button (click)="createDeck()" md-button>Create deck</button>
+<h3>Create card</h3>
+<button (click)="createCard()" md-button>Create card</button>
