@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+// app
 import { BlankLayoutComponent, CommonLayoutComponent } from './layouts';
+import { UserGuard } from './user/user.guard';
 
 const routes: Routes = [
   {
@@ -10,6 +12,7 @@ const routes: Routes = [
   },
   {
     path: 'dashboard',
+    canActivate: [ UserGuard ],
     component: CommonLayoutComponent,
     loadChildren: 'app/dashboard/dashboard.module#DashboardModule'
   }
