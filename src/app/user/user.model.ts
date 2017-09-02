@@ -25,8 +25,6 @@ export class User implements IUser {
         this[ property ] = object[ property ];
       }
     }
-
-    console.log(this);
   }
 
   serialize(): IUser {

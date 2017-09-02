@@ -23,10 +23,7 @@ export class UserEffects {
     .switchMap((action: UserActions.SignInEmailAction) => {
       return Observable.fromPromise(
         this.userService.signIn(action.payload.email, action.payload.password))
-        .map((response: any) => {
-          console.log(response);
-          return new UserActions.SignInSuccessAction(response);
-        })
+        .map((response: any) => new UserActions.SignInSuccessAction(response))
         .catch((error) => Observable.of(new UserActions.SignInFailureAction(error)));
     });
 
