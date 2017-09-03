@@ -8,20 +8,21 @@ import 'rxjs/add/operator/take';
 // app
 import { IAppState } from '../ngrx/app.action';
 import { UserState } from './ngrx/user.state';
+import { UserService } from './user.service';
 
 @Injectable()
 export class UserGuard implements CanActivate, CanLoad {
 
-  constructor(private store: Store<IAppState>) {
+  constructor(private userService: UserService) {
   }
 
   canActivate(route: ActivatedRouteSnapshot,
               routerState: RouterStateSnapshot): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      this.store.select(s => s.user)
+      this.userService.getCurrentUser()
         .take(1)
-        .subscribe((state: UserState.IState) => {
-          if (state.current) {
+        .subscribe(user => {
+          if (user) {
             resolve(true);
           } else {
             resolve(false);
