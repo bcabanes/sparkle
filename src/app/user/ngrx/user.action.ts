@@ -15,6 +15,7 @@ export namespace UserActions {
     SIGN_IN_SUCCESS: string;
     SIGN_IN_FAILURE: string;
     SIGN_OUT: string;
+    SIGN_OUT_FAILURE: string;
     SIGN_OUT_SUCCESS: string;
     SIGN_UP: string;
     SIGN_UP_FAILURE: string;
@@ -31,6 +32,7 @@ export namespace UserActions {
     SIGN_IN_SUCCESS : type(`${CATEGORY} Sign in Success`),
     SIGN_IN_SOCIAL  : type(`${CATEGORY} Sign in with social providers`),
     SIGN_OUT        : type(`${CATEGORY} Sign out`),
+    SIGN_OUT_FAILURE: type(`${CATEGORY} Sign out Failure`),
     SIGN_OUT_SUCCESS: type(`${CATEGORY} Sign out Success`),
     SIGN_UP         : type(`${CATEGORY} Sign up`),
     SIGN_UP_FAILURE : type(`${CATEGORY} Sign up Failure`),
@@ -103,6 +105,27 @@ export namespace UserActions {
      */
     constructor(public payload: any) {
     }
+  }
+
+  export class SignOutAction implements Action {
+    type = ActionTypes.SIGN_OUT;
+    payload: string = null;
+  }
+
+  export class SignOutFailureAction implements Action {
+    type = ActionTypes.SIGN_OUT_FAILURE;
+
+    /**
+     *
+     * @param payload
+     */
+    constructor(public payload: any) {
+    }
+  }
+
+  export class SignOutSuccessAction implements Action {
+    type = ActionTypes.SIGN_OUT_SUCCESS;
+    payload: string = null;
   }
 
   export class SignUpAction implements Action {

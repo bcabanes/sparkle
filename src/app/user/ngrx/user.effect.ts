@@ -45,11 +45,25 @@ export class UserEffects {
         .catch((error) => Observable.of(new UserActions.SignUpFailureAction(error)));
     });
 
+  @Effect() signOut$: Observable<Action> = this.actions$
+    .ofType<UserActions.SignOutAction>(UserActions.ActionTypes.SIGN_OUT)
+    .switchMap((action: UserActions.SignOutAction) => {
+      return Observable.fromPromise(
+        this.userService.signOut())
+        .map((response: any) => new UserActions.SignOutSuccessAction())
+        .catch((error) => Observable.of(new UserActions.SignOutFailureAction(error)));
+    });
+
   @Effect() apiError$: Observable<Action> = this.actions$
-    .ofType<UserActions.ApiErrorAction | UserActions.SignInFailureAction>(
+    .ofType<
+      UserActions.ApiErrorAction |
+      UserActions.SignInFailureAction |
+      UserActions.SignUpFailureAction |
+      UserActions.SignOutFailureAction>(
       UserActions.ActionTypes.API_ERROR,
       UserActions.ActionTypes.SIGN_IN_FAILURE,
-      UserActions.ActionTypes.SIGN_UP_FAILURE
+      UserActions.ActionTypes.SIGN_UP_FAILURE,
+      UserActions.ActionTypes.SIGN_OUT_FAILURE
     )
     .withLatestFrom(this.store)
     .map(([ action, state ]) => new UserActions.ChangedAction({

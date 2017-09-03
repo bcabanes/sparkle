@@ -19,4 +19,8 @@ export class UserService {
   public signUp(email: string, password: string): firebase.Promise<any> {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password);
   }
+
+  public signOut(): firebase.Promise<any> {
+    return this.afAuth.auth.signOut();
+  }
 }
