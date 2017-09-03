@@ -2,14 +2,16 @@ import { NgModule } from '@angular/core';
 
 import {
   MdButtonModule,
-  MdInputModule
+  MdInputModule,
+  MdToolbarModule
 } from '@angular/material';
 
 import 'hammerjs';
 
 const ComponentModules: any[] = [
   MdButtonModule,
-  MdInputModule
+  MdInputModule,
+  MdToolbarModule
 ];
 
 @NgModule({
