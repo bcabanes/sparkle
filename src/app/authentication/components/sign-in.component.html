@@ -1,29 +1,23 @@
 <h2>Sign In</h2>
 <form [formGroup]="signInForm" (ngSubmit)="signIn()">
   <div class="form-group form-authentication">
-    <div class="input">
-      <md-input-container class="email-input">
+    <md-form-field class="email-input input-full-width">
         <input mdInput
                [formControl]="signInForm.controls.email"
                type="text"
                placeholder="Your email">
-      </md-input-container>
-    </div>
-    <!-- /.input -->
+    </md-form-field>
 
-    <div class="input">
-      <md-input-container class="password-input">
+      <md-form-field class="password-input  input-full-width">
         <input mdInput
                [formControl]="signInForm.controls.password"
                type="password"
                placeholder="Your password">
-      </md-input-container>
-    </div>
-    <!-- /.input -->
+      </md-form-field>
 
     <div class="form-btn">
       <a (click)="router.navigate(['auth', 'sign-up'])" md-button>Don't have an account?</a>
-      <button type="submit" md-button>Sign in</button>
+      <button type="submit" md-raised-button color="primary">Sign in</button>
     </div>
   </div>
 </form>
