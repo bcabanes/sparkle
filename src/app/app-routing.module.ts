@@ -15,7 +15,8 @@ const routes: Routes = [
     canActivate: [ UserGuard ],
     component: CommonLayoutComponent,
     loadChildren: 'app/dashboard/dashboard.module#DashboardModule'
-  }
+  },
+  { path: '**', redirectTo: 'auth/login'}
 ];
 
 @NgModule({
