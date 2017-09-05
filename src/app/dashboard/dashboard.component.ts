@@ -38,7 +38,7 @@ export class DashboardComponent implements OnInit {
 
   public createDeck() {
     const deck = new Deck({
-      title: 'DeckTitle',
+      title: `DeckTitle ${(Math.random() * 100).toFixed()}`,
       content: `Deck content ${(Math.random() * 100).toFixed()}`,
       type: 'card'
     });

@@ -1,9 +1,5 @@
-<p>This is the dashboard component.</p>
-<h3>Deck list</h3>
-<div *ngFor="let deck of deckList$ | async">
-  <pre>{{ deck | json }}</pre>
-  <button (click)="deleteDeck(deck.uid)" md-button>DELETE</button>
-</div>
+<app-deck-list [deckList]="deckList$ | async"></app-deck-list>
+
 <hr>
 <h3>Card list</h3>
 <div *ngFor="let card of cardList$ | async">
