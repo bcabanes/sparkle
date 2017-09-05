@@ -17,6 +17,9 @@ export class Deck implements IDeck {
         this[ property ] = object[ property ];
       }
     }
+    if (object.hasOwnProperty('$key')) {
+      this.uid = object.$key;
+    }
   }
 
   serialize(): IDeck {
