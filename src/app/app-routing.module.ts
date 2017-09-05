@@ -16,6 +16,12 @@ const routes: Routes = [
     component: CommonLayoutComponent,
     loadChildren: 'app/dashboard/dashboard.module#DashboardModule'
   },
+  {
+    path: 'manage',
+    canActivate: [ UserGuard ],
+    component: CommonLayoutComponent,
+    loadChildren: 'app/manage/manage.module#ManageModule'
+  },
   { path: '**', redirectTo: 'auth/login'}
 ];
 
