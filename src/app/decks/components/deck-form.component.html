@@ -1,0 +1,15 @@
+<h2>Deck</h2>
+<form [formGroup]="deckForm" (ngSubmit)="submit()">
+  <div class="form-group form-authentication">
+    <md-form-field class="email-input input-full-width">
+      <input mdInput
+             [formControl]="deckForm.controls.title"
+             type="text"
+             placeholder="Deck's title">
+    </md-form-field>
+
+    <div class="form-btn">
+      <button type="submit" md-raised-button color="primary">Submit</button>
+    </div>
+  </div>
+</form>
