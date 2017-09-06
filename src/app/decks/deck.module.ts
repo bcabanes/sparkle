@@ -7,7 +7,6 @@ import { SharedModule } from '../shared/shared.module';
 import { DeckService } from './deck.service';
 import { deckReducer } from './ngrx/deck.reducer';
 import { DECKS_COMPONENTS } from './components/index';
-import { DeckResolver } from './deck.resolver';
 
 @NgModule({
   declarations: [
@@ -19,7 +18,6 @@ import { DeckResolver } from './deck.resolver';
     EffectsModule.forFeature([DeckEffects])
   ],
   providers: [
-    DeckResolver,
     DeckService
   ],
   exports: [

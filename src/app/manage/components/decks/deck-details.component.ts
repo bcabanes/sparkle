@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute} from '@angular/router';
 import { Store } from '@ngrx/store';
-import 'rxjs/add/operator/delay';
+import 'rxjs/add/operator/find';
 import 'rxjs/add/operator/switchMap';
 // app
 import { IAppState } from '../../../ngrx/app.action';
 import { IDeck } from '../../../decks/deck.model';
+import { DeckActions } from '../../../decks/ngrx/deck.action';
 
 @Component({
   selector: 'app-deck-details',
@@ -21,8 +22,13 @@ export class DeckDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.deck$ = this.route.params
-      .switchMap(params => this.store.select(s => s.deck.list)
-        .map((deckList: IDeck[]) =>
-          deckList.find((deck) => deck.uid === params['deckUid'])));
+      .switchMap(params => {
+        this.store.dispatch(new DeckActions.LoadDeckAction(params['deckUid']));
+        return this.store.select(s => s.deck.current);
+      });
+  }
+
+  public delete(uid) {
+    this.store.dispatch(new DeckActions.DeleteDeckAction(uid));
   }
 }

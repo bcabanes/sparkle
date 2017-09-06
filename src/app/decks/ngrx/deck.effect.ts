@@ -20,9 +20,9 @@ export class DeckEffects {
   @Effect() createDeck$: Observable<Action> = this.actions$
     .ofType<DeckActions.CreateDeckAction>(DeckActions.ActionTypes.CREATE_DECK)
     .switchMap((action: DeckActions.CreateDeckAction) =>
-      Observable.fromPromise(this.deckService.createDeck(action.payload))
+      this.deckService.createDeck(action.payload))
         .map(data => new DeckActions.CreateDeckSuccessAction(data))
-        .catch(error => Observable.of(new DeckActions.CreateDeckFailureAction(error))));
+        .catch(error => Observable.of(new DeckActions.CreateDeckFailureAction(error)));
 
   @Effect() createDeckSuccess$: Observable<Action> = this.actions$
     .ofType<DeckActions.CreateDeckSuccessAction>(DeckActions.ActionTypes.CREATE_DECK_SUCCESS)
@@ -30,14 +30,15 @@ export class DeckEffects {
       const deck = new Deck(action.payload);
       return new DeckActions.ChangedAction({ current: deck.serialize(), errors: [] });
     })
-    .do(data => new DeckActions.LoadDeckListAction());
+    .switchMap((action: DeckActions.ChangedAction) =>
+      Observable.of(new DeckActions.LoadDeckListAction()));
 
   @Effect() deleteDeck$: Observable<Action> = this.actions$
     .ofType<DeckActions.DeleteDeckAction>(DeckActions.ActionTypes.DELETE_DECK)
     .switchMap((action: DeckActions.DeleteDeckAction) =>
-      Observable.fromPromise(this.deckService.deleteDeck(action.payload))
+      this.deckService.deleteDeck(action.payload))
         .map(data => new DeckActions.DeleteDeckSuccessAction())
-        .catch(error => Observable.of(new DeckActions.DeleteDeckFailureAction(error))));
+        .catch(error => Observable.of(new DeckActions.DeleteDeckFailureAction(error)));
 
   @Effect() deleteDeckSuccess$: Observable<Action> = this.actions$
     .ofType<DeckActions.DeleteDeckSuccessAction>(DeckActions.ActionTypes.DELETE_DECK_SUCCESS)
@@ -69,13 +70,8 @@ export class DeckEffects {
 
   @Effect() loadDeckListSuccess$: Observable<Action> = this.actions$
     .ofType<DeckActions.LoadDeckListSuccessAction>(DeckActions.ActionTypes.LOAD_DECK_LIST_SUCCESS)
-    .map((action: DeckActions.LoadDeckListSuccessAction) => {
-      const deckList: IDeck[] = action.payload.map((firebaseDeck: any) => {
-        const deck = new Deck({ ...firebaseDeck, uid: firebaseDeck.$key });
-        return deck.serialize();
-      });
-      return new DeckActions.ChangedAction({ list: deckList, errors: [] });
-    });
+    .map((action: DeckActions.LoadDeckListSuccessAction) =>
+      new DeckActions.ChangedAction({ list: action.payload, errors: [] }));
 
   @Effect() apiError$: Observable<Action> = this.actions$
     .ofType<

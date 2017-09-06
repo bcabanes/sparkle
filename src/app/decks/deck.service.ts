@@ -1,39 +1,39 @@
-import { Injectable } from '@angular/core';
-import {
-  AngularFireDatabase,
-  FirebaseListObservable,
-  FirebaseObjectObservable
-} from 'angularfire2/database';
-import * as firebase from 'firebase';
-import { IDeck } from './deck.model';
+import { Inject, Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+// app
+import { ApiUrl } from '../core/tokens';
+import { IDeck } from './deck.model';
+import { firebaseObjectToArray } from '../shared/helpers';
 
 @Injectable()
 export class DeckService {
+  private deckPath = 'decks';
 
-  constructor(private afAuth: AngularFireAuth,
-              private db: AngularFireDatabase) {
+  constructor(@Inject(ApiUrl) private apiUrl: string,
+              private afAuth: AngularFireAuth,
+              private http: HttpClient) {
   }
 
-  public createDeck(deck: IDeck): any {
-    return this.db.list(`${this.afAuth.auth.currentUser.uid}/decks/`).push(deck)
-      .then(data => {
-        return {
-          ...deck,
-          uid: data.key
-        } as IDeck;
-      });
+  public createDeck(deck: IDeck): Observable<IDeck> {
+    const url = `${this.apiUrl}/${this.afAuth.auth.currentUser.uid}/${this.deckPath}.json`;
+    return this.http.post(url, deck)
+      .map((data: { name: string }) => ({ ...deck, uid: data.name }));
   }
 
-  public getDeckList(): FirebaseListObservable<IDeck[]> {
-    return this.db.list(`${this.afAuth.auth.currentUser.uid}/decks/`);
+  public getDeckList(): Observable<IDeck[]> {
+    const url = `${this.apiUrl}/${this.afAuth.auth.currentUser.uid}/${this.deckPath}.json`;
+    return this.http.get(url).map((data: any) => firebaseObjectToArray(data));
   }
 
-  public getDeck(deckUid: string): FirebaseObjectObservable<IDeck> {
-    return this.db.object(`${this.afAuth.auth.currentUser.uid}/decks/${deckUid}`);
+  public getDeck(deckUid: string): Observable<IDeck> {
+    const url = `${this.apiUrl}/${this.afAuth.auth.currentUser.uid}/${this.deckPath}/${deckUid}.json`;
+    return this.http.get(url).map((data: any) => ({ ...data, uid: deckUid }));
   }
 
-  public deleteDeck(deckUid: string): any {
-    return this.db.list(`${this.afAuth.auth.currentUser.uid}/decks`).remove(deckUid);
+  public deleteDeck(deckUid: string): Observable<any> {
+    const url = `${this.apiUrl}/${this.afAuth.auth.currentUser.uid}/${this.deckPath}/${deckUid}.json`;
+    return this.http.delete(url);
   }
 }
