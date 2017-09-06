@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
+import { InjectionToken, NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 import { StoreModule } from '@ngrx/store';
 import { appReducer, metaReducers } from './ngrx/app.reducer';
@@ -19,6 +20,7 @@ import { LAYOUTS_COMPONENTS } from './layouts/index';
 
 import { environment } from '../environments/environment'; // Only dev for now.
 
+import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared';
 import { UserModule } from './user';
 import { DeckModule } from './decks';
@@ -32,6 +34,7 @@ import { CardModule } from './cards/card.module';
   imports     : [
     BrowserModule,
     BrowserAnimationsModule, // For Material animations.
+    HttpClientModule,
 
     AppRoutingModule,
 
@@ -53,6 +56,7 @@ import { CardModule } from './cards/card.module';
     /**
      * App Modules
      */
+    CoreModule,
     CardModule,
     DeckModule,
     UserModule,
