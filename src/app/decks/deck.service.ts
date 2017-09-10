@@ -1,11 +1,9 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { HttpClient } from '@angular/common/http';
+import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 // app
-import { ApiUrl } from '../core/tokens';
 import { IDeck } from './deck.model';
-import { firebaseObjectToArray } from '../shared/helpers';
 import { CardService } from '../cards/card.service';
 import { ICard } from '../cards/card.model';
 
@@ -13,39 +11,45 @@ import { ICard } from '../cards/card.model';
 export class DeckService {
   private deckPath = 'decks';
 
-  constructor(@Inject(ApiUrl) private apiUrl: string,
-              private afAuth: AngularFireAuth,
-              private cardService: CardService,
-              private http: HttpClient) {
+  constructor(private afAuth: AngularFireAuth,
+              private db: AngularFireDatabase,
+              private cardService: CardService) {
   }
 
   public createDeck(deck: IDeck): Observable<IDeck> {
-    const url = `${this.apiUrl}/${this.afAuth.auth.currentUser.uid}/${this.deckPath}.json`;
-    return this.http.post(url, deck)
-      .map((data: { name: string }) => ({ ...deck, uid: data.name }));
+    const path = `${this.afAuth.auth.currentUser.uid}/${this.deckPath}`;
+    return Observable.fromPromise(this.db.list(path).push(deck)
+      .then(data => {
+        return {
+          ...deck,
+          uid: data.key
+        } as IDeck;
+      }));
   }
 
   public getDeckList(): Observable<IDeck[]> {
-    const url = `${this.apiUrl}/${this.afAuth.auth.currentUser.uid}/${this.deckPath}.json`;
-    return this.http.get(url).map((data: any) => firebaseObjectToArray(data));
+    const path = `${this.afAuth.auth.currentUser.uid}/${this.deckPath}`;
+    return this.db.list(path).first();
   }
 
   public getDeck(deckUid: string): Observable<IDeck> {
-    const url = `${this.apiUrl}/${this.afAuth.auth.currentUser.uid}/${this.deckPath}/${deckUid}.json`;
-    return this.http.get(url).map((data: any) => ({ ...data, uid: deckUid }));
+    const path = `${this.afAuth.auth.currentUser.uid}/${this.deckPath}/${deckUid}`;
+    return this.db.object(path).first();
   }
 
-  public updateDeck(deck: IDeck): Observable<IDeck> {
-    const url = `${this.apiUrl}/${this.afAuth.auth.currentUser.uid}/${this.deckPath}/${deck.uid}.json`;
-    return this.http.put(url, deck).map((data: any) => ({ ...data, uid: deck.uid }));
-  }
+  // TODO: update deck action
+  // public updateDeck(deck: IDeck): Observable<IDeck> {
+  //   const url = `${this.apiUrl}/${this.afAuth.auth.currentUser.uid}/${this.deckPath}/${deck.uid}.json`;
+  //   return this.http.put(url, deck).map((data: any) => ({ ...data, uid: deck.uid }));
+  // }
 
-  public deleteDeck(deckUid: string): Observable<any> {
+  public deleteDeck(deckUid: string): Observable<void> {
     return this.cardService.getCardList(deckUid)
       .map((cardList: ICard[]) => cardList.forEach(card => this.cardService.deleteCard(card.uid)))
       .switchMap(() => {
-        const url = `${this.apiUrl}/${this.afAuth.auth.currentUser.uid}/${this.deckPath}/${deckUid}.json`;
-        return this.http.delete(url);
+        const path = `${this.afAuth.auth.currentUser.uid}/${this.deckPath}`;
+        return Observable.fromPromise(this.db.list(path).remove(deckUid))
+          .first();
       });
   }
 }
