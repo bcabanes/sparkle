@@ -3,10 +3,8 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 // app
 import { IAppState } from '../ngrx/app.action';
-import { Card, ICard } from '../cards/card.model';
-import { Deck, IDeck } from '../decks/deck.model';
+import { IDeck } from '../decks/deck.model';
 import { DeckActions } from '../decks/ngrx/deck.action';
-import { CardActions } from '../cards/ngrx/card.action';
 
 @Component({
   selector   : 'app-dashboard',
@@ -21,15 +19,6 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(new DeckActions.LoadDeckListAction());
     this.deckList$ = this.store.select(s => s.deck.list);
-  }
-
-  public createDeck() {
-    const deck = new Deck({
-      title: `DeckTitle ${(Math.random() * 100).toFixed()}`,
-      content: `Deck content ${(Math.random() * 100).toFixed()}`,
-      type: 'card'
-    });
-    this.store.dispatch(new DeckActions.CreateDeckAction(deck.serialize()));
   }
 
   public deleteDeck(deckUid) {

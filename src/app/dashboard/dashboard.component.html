@@ -1,5 +1,6 @@
-<app-deck-list [deckList]="deckList$ | async" (onDelete)="deleteDeck($event)"></app-deck-list>
+<app-deck-list [deckList]="deckList$ | async"
+               (onDelete)="deleteDeck($event)"></app-deck-list>
 
-<hr>
-<h3>Create deck</h3>
-<button (click)="createDeck()" md-button>Create deck</button>
+<a [routerLink]="[ '/manage', 'decks', 'new' ]"
+   md-raised-button
+   color="primary">Create deck</a>
