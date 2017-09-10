@@ -1,5 +1,10 @@
 <div *ngIf="deck$ | async as deck">
   <h2>Deck details component</h2>
   <pre>{{deck | json }}</pre>
-  <button (click)="delete(deck.uid)" md-raised-button color="primary">DELETE</button>
+  <button (click)="deleteDeck(deck.uid)" md-raised-button color="primary">DELETE</button>
+  <button (click)="createCard(deck.uid)" md-raised-button color="accent">Create card</button>
+</div>
+
+<div *ngIf="cardList$ | async as cardList">
+  <app-card-list [cardList]="cardList" (onDelete)="deleteCard($event)"></app-card-list>
 </div>

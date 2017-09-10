@@ -8,6 +8,8 @@ import 'rxjs/add/operator/switchMap';
 import { IAppState } from '../../../ngrx/app.action';
 import { IDeck } from '../../../decks/deck.model';
 import { DeckActions } from '../../../decks/ngrx/deck.action';
+import { CardActions } from '../../../cards/ngrx/card.action';
+import { Card, ICard } from '../../../cards/card.model';
 
 @Component({
   selector: 'app-deck-details',
@@ -15,6 +17,7 @@ import { DeckActions } from '../../../decks/ngrx/deck.action';
 })
 export class DeckDetailsComponent implements OnInit {
   deck$: Observable<IDeck>;
+  cardList$: Observable<ICard[]>;
 
   constructor(private route: ActivatedRoute,
               private store: Store<IAppState>) {
@@ -24,11 +27,28 @@ export class DeckDetailsComponent implements OnInit {
     this.deck$ = this.route.params
       .switchMap(params => {
         this.store.dispatch(new DeckActions.LoadDeckAction(params['deckUid']));
+        this.store.dispatch(new CardActions.LoadCardListAction(params['deckUid']))
         return this.store.select(s => s.deck.current);
       });
+
+    this.cardList$ = this.store.select(s => s.card.list);
   }
 
-  public delete(uid) {
-    this.store.dispatch(new DeckActions.DeleteDeckAction(uid));
+  public createCard(deckUid: string) {
+    const card = new Card({
+      title: 'CardTitle',
+      content: `Card content ${(Math.random() * 100).toFixed()}`,
+      type: 'card',
+      deckUid
+    });
+    this.store.dispatch(new CardActions.CreateCardAction(card.serialize()));
+  }
+
+  public deleteDeck(deckUid: string) {
+    this.store.dispatch(new DeckActions.DeleteDeckAction(deckUid));
+  }
+
+  public deleteCard(cardUid: string) {
+    this.store.dispatch(new CardActions.DeleteCardAction(cardUid));
   }
 }
