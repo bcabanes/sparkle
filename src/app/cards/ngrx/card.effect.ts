@@ -17,33 +17,36 @@ import { Card, ICard } from '../card.model';
 export class CardEffects {
 
   @Effect() createCard$: Observable<Action> = this.actions$
-    .ofType<CardActions.CreateCardAction>(CardActions.ActionTypes.CREATE_CARD)
+    .ofType(CardActions.ActionTypes.CREATE_CARD)
     .switchMap((action: CardActions.CreateCardAction) =>
-      Observable.fromPromise(this.cardService.createCard(action.payload))
+      this.cardService.createCard(action.payload))
         .map((data: ICard) => new CardActions.CreateCardSuccessAction(data))
-        .catch(error => Observable.of(new CardActions.CreateCardFailureAction(error))));
+        .catch(error => Observable.of(new CardActions.CreateCardFailureAction(error)));
 
   @Effect() createCardSuccess$: Observable<Action> = this.actions$
-    .ofType<CardActions.CreateCardSuccessAction>(CardActions.ActionTypes.CREATE_CARD_SUCCESS)
+    .ofType(CardActions.ActionTypes.CREATE_CARD_SUCCESS)
     .map((action: CardActions.CreateCardSuccessAction) => {
       const card = new Card(action.payload);
       return new CardActions.ChangedAction({ current: card.serialize(), errors: [] });
-    });
+    })
+    .withLatestFrom(this.store)
+    .map(([action, state]) => new CardActions.LoadCardListAction(state.deck.current.uid));
 
   @Effect() deleteCard$: Observable<Action> = this.actions$
-    .ofType<CardActions.DeleteCardAction>(CardActions.ActionTypes.DELETE_CARD)
+    .ofType(CardActions.ActionTypes.DELETE_CARD)
     .switchMap((action: CardActions.DeleteCardAction) =>
-      Observable.fromPromise(this.cardService.deleteCard(action.payload))
+      this.cardService.deleteCard(action.payload))
         .map(data => new CardActions.DeleteCardSuccessAction())
-        .catch(error => Observable.of(new CardActions.DeleteCardFailureAction(error))));
+        .catch(error => Observable.of(new CardActions.DeleteCardFailureAction(error)));
 
-  // @Effect() deleteCardSuccess$: Observable<Action> = this.actions$
-  //   .ofType<CardActions.DeleteCardSuccessAction>(CardActions.ActionTypes.DELETE_CARD_SUCCESS)
-  //   .map((action: CardActions.DeleteCardSuccessAction) =>
-  //     new CardActions.LoadCardListAction());
+  @Effect() deleteCardSuccess$: Observable<Action> = this.actions$
+    .ofType<CardActions.DeleteCardSuccessAction>(CardActions.ActionTypes.DELETE_CARD_SUCCESS)
+    .withLatestFrom(this.store)
+    .map(([ action, state ]) =>
+      new CardActions.LoadCardListAction(state.deck.current.uid));
 
   @Effect() loadCard$: Observable<Action> = this.actions$
-    .ofType<CardActions.LoadCardAction>(CardActions.ActionTypes.LOAD_CARD)
+    .ofType(CardActions.ActionTypes.LOAD_CARD)
     .switchMap((action: CardActions.LoadCardAction) => {
       return this.cardService.getCard(action.payload)
         .map((card: ICard) => new CardActions.LoadCardSuccessAction(card))
@@ -51,14 +54,14 @@ export class CardEffects {
     });
 
   @Effect() loadCardSuccess$: Observable<Action> = this.actions$
-    .ofType<CardActions.LoadCardSuccessAction>(CardActions.ActionTypes.LOAD_CARD_SUCCESS)
+    .ofType(CardActions.ActionTypes.LOAD_CARD_SUCCESS)
     .map((action: CardActions.LoadCardSuccessAction) => {
       const card = new Card(action.payload);
       return new CardActions.ChangedAction({ current: card.serialize(), errors: [] });
     });
 
   @Effect() loadCardList$: Observable<Action> = this.actions$
-    .ofType<CardActions.LoadCardListAction>(CardActions.ActionTypes.LOAD_CARD_LIST)
+    .ofType(CardActions.ActionTypes.LOAD_CARD_LIST)
     .switchMap((action: CardActions.LoadCardListAction) => {
       return this.cardService.getCardList(action.payload)
         .map((cardList: ICard[]) => new CardActions.LoadCardListSuccessAction(cardList))
@@ -66,7 +69,7 @@ export class CardEffects {
     });
 
   @Effect() loadCardListSuccess$: Observable<Action> = this.actions$
-    .ofType<CardActions.LoadCardListSuccessAction>(CardActions.ActionTypes.LOAD_CARD_LIST_SUCCESS)
+    .ofType(CardActions.ActionTypes.LOAD_CARD_LIST_SUCCESS)
     .map((action: CardActions.LoadCardListSuccessAction) => {
       const cardList: ICard[] = action.payload.map((firebaseCard: any) => {
         const card = new Card({ ...firebaseCard, uid: firebaseCard.$key });
