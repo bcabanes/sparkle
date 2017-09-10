@@ -1,17 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // app
-import { DeckFormComponent } from '../decks/components/deck-form.component';
-import { DeckDetailsComponent } from './components/decks';
+import { DeckDetailsComponent, DeckEditComponent } from './components/decks';
 
 const routes: Routes = [
   {
-    path: 'decks/:deckUid',
-    component: DeckDetailsComponent
+    path     : 'decks/new',
+    component: DeckEditComponent
   },
-  { // TODO: => DeckUpdateComponent
-    path: 'decks/:deckUid/update',
-    component: DeckFormComponent
+  {
+    path     : 'decks/:deckUid/edit',
+    component: DeckEditComponent
+  },
+  {
+    path     : 'decks/:deckUid',
+    component: DeckDetailsComponent
   },
   { path: '**', redirectTo: '/dashboard' }
 ];

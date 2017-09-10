@@ -27,7 +27,7 @@ export class DeckDetailsComponent implements OnInit {
     this.deck$ = this.route.params
       .switchMap(params => {
         this.store.dispatch(new DeckActions.LoadDeckAction(params['deckUid']));
-        this.store.dispatch(new CardActions.LoadCardListAction(params['deckUid']))
+        this.store.dispatch(new CardActions.LoadCardListAction(params['deckUid']));
         return this.store.select(s => s.deck.current);
       });
 

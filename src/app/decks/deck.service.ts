@@ -35,6 +35,11 @@ export class DeckService {
     return this.http.get(url).map((data: any) => ({ ...data, uid: deckUid }));
   }
 
+  public updateDeck(deck: IDeck): Observable<IDeck> {
+    const url = `${this.apiUrl}/${this.afAuth.auth.currentUser.uid}/${this.deckPath}/${deck.uid}.json`;
+    return this.http.put(url, deck).map((data: any) => ({ ...data, uid: deck.uid }));
+  }
+
   public deleteDeck(deckUid: string): Observable<any> {
     return this.cardService.getCardList(deckUid)
       .map((cardList: ICard[]) => cardList.forEach(card => this.cardService.deleteCard(card.uid)))

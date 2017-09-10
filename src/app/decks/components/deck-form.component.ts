@@ -1,10 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
 // app
-import { Deck } from '../deck.model';
-import { IAppState } from '../../ngrx/app.action';
-import { DeckActions } from '../ngrx/deck.action';
+import { Deck, IDeck } from '../deck.model';
 
 @Component({
   selector: 'app-deck-form',
@@ -13,8 +10,11 @@ import { DeckActions } from '../ngrx/deck.action';
 export class DeckFormComponent implements OnInit {
   deckForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder,
-              private store: Store<IAppState>) {
+  @Input() deck: IDeck = {} as IDeck;
+
+  @Output() submitted: EventEmitter<Deck> = new EventEmitter();
+
+  constructor(private formBuilder: FormBuilder) {
   }
 
   ngOnInit() {
@@ -28,7 +28,7 @@ export class DeckFormComponent implements OnInit {
   }
 
   submit() {
-    const deck = new Deck({ title: this.deckForm.value.title });
-    this.store.dispatch(new DeckActions.CreateDeckAction(deck.serialize()));
+    const deck = new Deck({ ...this.deck, title: this.deckForm.value.title });
+    this.submitted.emit(deck);
   }
 }

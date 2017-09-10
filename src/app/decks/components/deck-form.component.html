@@ -5,7 +5,7 @@
       <input mdInput
              [formControl]="deckForm.controls.title"
              type="text"
-             placeholder="Deck's title">
+             [placeholder]="deck.title || 'Deck\'s title'">
     </md-form-field>
 
     <div class="form-btn">

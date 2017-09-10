@@ -1,12 +1,12 @@
 
 import {
   DeckDetailsComponent,
-  DeckUpdateComponent
+  DeckEditComponent
 } from './decks';
 
 export const MANAGE_COMPONENTS: any[] = [
   DeckDetailsComponent,
-  DeckUpdateComponent
+  DeckEditComponent
 ];
 
 export * from './decks';

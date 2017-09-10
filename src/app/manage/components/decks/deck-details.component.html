@@ -2,6 +2,7 @@
   <h2>Deck details component</h2>
   <pre>{{deck | json }}</pre>
   <button (click)="deleteDeck(deck.uid)" md-raised-button color="primary">DELETE</button>
+  <a [routerLink]="[ 'edit' ]" md-raised-button>Edit</a>
   <button (click)="createCard(deck.uid)" md-raised-button color="accent">Create card</button>
 </div>
 

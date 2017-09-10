@@ -1,14 +1,10 @@
 export interface IDeck {
-  title: string | null;
-  content: string | null;
-  lastViewed: string | null;
-  uid: string | null;
+  title: string;
+  uid: string;
 }
 
 export class Deck implements IDeck {
   title = null;
-  content = null;
-  lastViewed = null;
   uid = null;
 
   constructor(object: any) {
