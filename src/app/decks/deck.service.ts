@@ -6,6 +6,8 @@ import { Observable } from 'rxjs/Observable';
 import { ApiUrl } from '../core/tokens';
 import { IDeck } from './deck.model';
 import { firebaseObjectToArray } from '../shared/helpers';
+import { CardService } from '../cards/card.service';
+import { ICard } from '../cards/card.model';
 
 @Injectable()
 export class DeckService {
@@ -13,6 +15,7 @@ export class DeckService {
 
   constructor(@Inject(ApiUrl) private apiUrl: string,
               private afAuth: AngularFireAuth,
+              private cardService: CardService,
               private http: HttpClient) {
   }
 
@@ -33,7 +36,11 @@ export class DeckService {
   }
 
   public deleteDeck(deckUid: string): Observable<any> {
-    const url = `${this.apiUrl}/${this.afAuth.auth.currentUser.uid}/${this.deckPath}/${deckUid}.json`;
-    return this.http.delete(url);
+    return this.cardService.getCardList(deckUid)
+      .map((cardList: ICard[]) => cardList.forEach(card => this.cardService.deleteCard(card.uid)))
+      .switchMap(() => {
+        const url = `${this.apiUrl}/${this.afAuth.auth.currentUser.uid}/${this.deckPath}/${deckUid}.json`;
+        return this.http.delete(url);
+      });
   }
 }
