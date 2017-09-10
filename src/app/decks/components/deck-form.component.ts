@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 // app
-import { Deck, IDeck } from '../deck.model';
+import { Deck } from '../deck.model';
 
 @Component({
   selector: 'app-deck-form',
@@ -10,7 +10,7 @@ import { Deck, IDeck } from '../deck.model';
 export class DeckFormComponent implements OnInit {
   deckForm: FormGroup;
 
-  @Input() deck: IDeck = {} as IDeck;
+  @Input() deck: Deck = {} as Deck;
 
   @Output() submitted: EventEmitter<Deck> = new EventEmitter();
 
