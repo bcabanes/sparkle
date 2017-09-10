@@ -32,5 +32,5 @@ export function logger(reducer: ActionReducer<IAppState>): ActionReducer<IAppSta
  * that will be composed to form the root meta-reducer.
  */
 export const metaReducers: MetaReducer<IAppState>[] = !environment.production
-  ? [ logger ]
+  ? [ /*logger*/ ]
   : [];
