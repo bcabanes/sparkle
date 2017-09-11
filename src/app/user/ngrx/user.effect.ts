@@ -58,6 +58,7 @@ export class UserEffects {
 
   @Effect() signOutSuccess$: Observable<Action> = this.actions$
     .ofType(UserActions.ActionTypes.SIGN_IN_REDIRECT, UserActions.ActionTypes.SIGN_OUT_SUCCESS)
+    .switchMap(() => Observable.of(new AppActions.NoopAction()))
     .do(() => this.router.navigate([ '/auth', 'sign-in' ]));
 
   @Effect() apiError$: Observable<Action> = this.actions$

@@ -6,6 +6,7 @@ import { userReducer } from './ngrx/user.reducer';
 import { UserEffects } from './ngrx/user.effect';
 import { UserService } from './user.service';
 import { UserAuthenticatedGuard } from './user-authenticated.guard';
+import { UserAnonymousGuard } from './user-anonymous.guard';
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import { UserAuthenticatedGuard } from './user-authenticated.guard';
   ],
   providers: [
     UserAuthenticatedGuard,
+    UserAnonymousGuard,
     UserService
   ]
 })

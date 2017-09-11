@@ -9,7 +9,7 @@ const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'auth' },
   {
     path: 'auth',
-    // canActivate: [ UserAnonymousGuard ],
+    canActivate: [ UserAnonymousGuard ],
     component: BlankLayoutComponent,
     loadChildren: 'app/authentication/authentication.module#AuthenticationModule'
   },
