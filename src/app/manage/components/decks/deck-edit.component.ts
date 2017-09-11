@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../../../ngrx/app.action';
 import { DeckActions } from '../../../decks/ngrx/deck.action';
@@ -15,6 +15,7 @@ export class DeckEditComponent implements OnInit {
   deck$: Observable<IDeck>;
 
   constructor(private route: ActivatedRoute,
+              private router: Router,
               private store: Store<IAppState>) {
   }
 
@@ -33,8 +34,10 @@ export class DeckEditComponent implements OnInit {
     if (deck.uid) {
       console.log('UPDATE DECK ACTION');
       return;
-      // return this.store.dispatch(new DeckActions.UpdateDeckAction(deck));
+      // this.store.dispatch(new DeckActions.UpdateDeckAction(deck));
+      // return this.router.navigate([ '/decks', deck.uid ]);
     }
-    return this.store.dispatch(new DeckActions.CreateDeckAction(deck.serialize()));
+    this.store.dispatch(new DeckActions.CreateDeckAction(deck.serialize()));
+    return this.router.navigate([ '/dashboard' ]);
   }
 }

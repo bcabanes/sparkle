@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, Effect } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
@@ -34,7 +35,8 @@ export class UserEffects {
     .map((action: UserActions.SignInSuccessAction) => {
       const user: User = new User(action.payload);
       return new UserActions.ChangedAction({ current: user.serialize(), errors: [] });
-    });
+    })
+    .do(() => this.router.navigate([ '/dashboard' ]));
 
   @Effect() signUp$: Observable<Action> = this.actions$
     .ofType<UserActions.SignUpAction>(UserActions.ActionTypes.SIGN_UP)
@@ -54,9 +56,12 @@ export class UserEffects {
         .catch((error) => Observable.of(new UserActions.SignOutFailureAction(error)));
     });
 
+  @Effect() signOutSuccess$: Observable<Action> = this.actions$
+    .ofType(UserActions.ActionTypes.SIGN_IN_REDIRECT, UserActions.ActionTypes.SIGN_OUT_SUCCESS)
+    .do(() => this.router.navigate([ '/auth', 'sign-in' ]));
+
   @Effect() apiError$: Observable<Action> = this.actions$
-    .ofType<
-      UserActions.ApiErrorAction |
+    .ofType<UserActions.ApiErrorAction |
       UserActions.SignInFailureAction |
       UserActions.SignUpFailureAction |
       UserActions.SignOutFailureAction>(
@@ -67,7 +72,7 @@ export class UserEffects {
     )
     .withLatestFrom(this.store)
     .map(([ action, state ]) => new UserActions.ChangedAction({
-      errors: [ action.payload, ...(state.errors || []) ]
+      errors: action.payload
     }));
 
   @Effect() init$: Observable<Action> = this.actions$
@@ -84,6 +89,7 @@ export class UserEffects {
         }));
 
   constructor(private actions$: Actions,
+              private router: Router,
               private store: Store<any>,
               private userService: UserService) {
   }

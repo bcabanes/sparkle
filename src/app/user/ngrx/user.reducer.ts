@@ -8,6 +8,7 @@ export function userReducer(state: UserState.IState = UserState.initialState,
 
   switch (action.type) {
     case UserActions.ActionTypes.CHANGED:
+      console.log('-----POOP-----', changeState());
       return changeState();
     default:
       return state;

@@ -5,7 +5,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { userReducer } from './ngrx/user.reducer';
 import { UserEffects } from './ngrx/user.effect';
 import { UserService } from './user.service';
-import { UserGuard } from './user.guard';
+import { UserAuthenticatedGuard } from './user-authenticated.guard';
 
 @NgModule({
   imports: [
@@ -13,7 +13,7 @@ import { UserGuard } from './user.guard';
     EffectsModule.forFeature([UserEffects])
   ],
   providers: [
-    UserGuard,
+    UserAuthenticatedGuard,
     UserService
   ]
 })
