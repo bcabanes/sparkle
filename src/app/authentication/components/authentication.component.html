@@ -1,5 +1,8 @@
 <div class="authentication-container">
   <div class="authentication-row">
+    <p>{{ (errors | async)?.message }}</p>
+  </div>
+  <div class="authentication-row">
     <router-outlet></router-outlet>
   </div>
   <!-- /.authentication-row -->

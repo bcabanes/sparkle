@@ -12,6 +12,7 @@ import { IAppState } from '../../ngrx/app.action';
 })
 export class AuthenticationComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
+  public errors: any;
 
   constructor(private router: Router,
               private store: Store<IAppState>) {
@@ -24,6 +25,7 @@ export class AuthenticationComponent implements OnInit, OnDestroy {
           this.router.navigate([ '/dashboard' ]);
         }
       });
+    this.errors = this.store.select(s => s.user.errors);
   }
 
   ngOnDestroy() {
