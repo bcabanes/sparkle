@@ -34,16 +34,6 @@ export class DeckDetailsComponent implements OnInit {
     this.cardList$ = this.store.select(s => s.card.list);
   }
 
-  public createCard(deckUid: string) {
-    const card = new Card({
-      title: 'CardTitle',
-      content: `Card content ${(Math.random() * 100).toFixed()}`,
-      type: 'card',
-      deckUid
-    });
-    this.store.dispatch(new CardActions.CreateCardAction(card.serialize()));
-  }
-
   public deleteDeck(deckUid: string) {
     this.store.dispatch(new DeckActions.DeleteDeckAction(deckUid));
   }
