@@ -19,6 +19,9 @@ export class Card implements ICard {
         this[ property ] = object[ property ];
       }
     }
+    if (object.hasOwnProperty('$key')) {
+      this.uid = object.$key;
+    }
   }
 
   serialize(): ICard {

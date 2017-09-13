@@ -11,25 +11,21 @@ import { ICard } from './card.model';
 
 @Injectable()
 export class CardService {
+  private cardPath = 'cards';
 
   constructor(private afAuth: AngularFireAuth,
               private db: AngularFireDatabase) {
   }
 
   public createCard(card: ICard): Observable<ICard> {
-    const userUid = this.afAuth.auth.currentUser.uid;
-    return Observable.fromPromise(this.db.list(`${userUid}/cards/`).push(card)
-      .then(data => {
-        return {
-          ...card,
-          uid: data.key
-        } as ICard;
-      }));
+    const path = `${this.afAuth.auth.currentUser.uid}/${this.cardPath}/`;
+    return Observable.fromPromise(this.db.list(path).push(card)
+      .then(data => ({ ...card, uid: data.key } as ICard)));
   }
 
   public getCardList(deckUid: string): Observable<ICard[]> {
-    const userUid = this.afAuth.auth.currentUser.uid;
-    return this.db.list(`${userUid}/cards/`, {
+    const path = `${this.afAuth.auth.currentUser.uid}/${this.cardPath}/`;
+    return this.db.list(path, {
       query: {
         orderByChild: 'deckUid',
         equalTo: deckUid
@@ -38,13 +34,19 @@ export class CardService {
   }
 
   public getCard(cardUid: string): Observable<ICard> {
-    const userUid = this.afAuth.auth.currentUser.uid;
-    return this.db.object(`${userUid}/cards/${cardUid}`).first();
+    const path = `${this.afAuth.auth.currentUser.uid}/${this.cardPath}/${cardUid}`;
+    return this.db.object(path).first();
+  }
+
+  public updateCard(card: ICard): Observable<ICard> {
+    const path = `${this.afAuth.auth.currentUser.uid}/${this.cardPath}/${card.uid}`;
+    return Observable.fromPromise(this.db.object(path)
+      .update({ title: card.title, content: card.content })
+      .then(() => ({ ...card } as ICard)));
   }
 
   public deleteCard(cardUid: string): Observable<void> {
-    const userUid = this.afAuth.auth.currentUser.uid;
-    return Observable.fromPromise(this.db.list(`${userUid}/cards`).remove(cardUid))
-      .first();
+    const path = `${this.afAuth.auth.currentUser.uid}/${this.cardPath}`;
+    return Observable.fromPromise(this.db.list(path).remove(cardUid));
   }
 }

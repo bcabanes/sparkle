@@ -23,6 +23,9 @@ export namespace CardActions {
     LOAD_CARD_LIST: string;
     LOAD_CARD_LIST_FAILURE: string;
     LOAD_CARD_LIST_SUCCESS: string;
+    UPDATE_CARD: string;
+    UPDATE_CARD_FAILURE: string;
+    UPDATE_CARD_SUCCESS: string;
   }
 
   export const ActionTypes: ICardAction = {
@@ -40,7 +43,10 @@ export namespace CardActions {
     LOAD_CARD_SUCCESS     : type(`${CATEGORY} Load card Success`),
     LOAD_CARD_LIST        : type(`${CATEGORY} Load card list`),
     LOAD_CARD_LIST_FAILURE: type(`${CATEGORY} Load card list Failure`),
-    LOAD_CARD_LIST_SUCCESS: type(`${CATEGORY} Load card list Success`)
+    LOAD_CARD_LIST_SUCCESS: type(`${CATEGORY} Load card list Success`),
+    UPDATE_CARD           : type(`${CATEGORY} Update card`),
+    UPDATE_CARD_FAILURE   : type(`${CATEGORY} Update card Failure`),
+    UPDATE_CARD_SUCCESS   : type(`${CATEGORY} Update card Success`)
   };
 
   export class ApiErrorAction implements Action {
@@ -205,6 +211,39 @@ export namespace CardActions {
     }
   }
 
+  export class UpdateCardAction implements Action {
+    type = ActionTypes.UPDATE_CARD;
+
+    /**
+     *
+     * @param {ICard} payload
+     */
+    constructor(public payload: ICard) {
+    }
+  }
+
+  export class UpdateCardFailureAction implements Action {
+    type = ActionTypes.UPDATE_CARD_FAILURE;
+
+    /**
+     *
+     * @param payload
+     */
+    constructor(public payload: any) {
+    }
+  }
+
+  export class UpdateCardSuccessAction implements Action {
+    type = ActionTypes.UPDATE_CARD_SUCCESS;
+
+    /**
+     *
+     * @param {ICard} payload
+     */
+    constructor(public payload: ICard) {
+    }
+  }
+
   /**
    * Load list of cards.
    */
@@ -218,5 +257,11 @@ export namespace CardActions {
     CreateCardSuccessAction |
     LoadCardAction |
     LoadCardFailureAction |
-    LoadCardSuccessAction;
+    LoadCardSuccessAction |
+    LoadCardListAction |
+    LoadCardListFailureAction |
+    LoadCardListSuccessAction |
+    UpdateCardAction |
+    UpdateCardFailureAction |
+    UpdateCardSuccessAction;
 }

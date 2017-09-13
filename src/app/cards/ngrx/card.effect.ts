@@ -30,7 +30,7 @@ export class CardEffects {
       return new CardActions.ChangedAction({ current: card.serialize(), errors: [] });
     })
     .withLatestFrom(this.store)
-    .map(([action, state]) => new CardActions.LoadCardListAction(state.deck.current.uid));
+    .map(([action, state]) => new CardActions.LoadCardListAction(state.card.current.uid));
 
   @Effect() deleteCard$: Observable<Action> = this.actions$
     .ofType(CardActions.ActionTypes.DELETE_CARD)
@@ -43,7 +43,7 @@ export class CardEffects {
     .ofType<CardActions.DeleteCardSuccessAction>(CardActions.ActionTypes.DELETE_CARD_SUCCESS)
     .withLatestFrom(this.store)
     .map(([ action, state ]) =>
-      new CardActions.LoadCardListAction(state.deck.current.uid));
+      new CardActions.LoadCardListAction(state.card.current.uid));
 
   @Effect() loadCard$: Observable<Action> = this.actions$
     .ofType(CardActions.ActionTypes.LOAD_CARD)
@@ -78,16 +78,33 @@ export class CardEffects {
       return new CardActions.ChangedAction({ list: cardList, errors: [] });
     });
 
+  @Effect() updateCard$: Observable<Action> = this.actions$
+    .ofType(CardActions.ActionTypes.UPDATE_CARD)
+    .switchMap((action: CardActions.UpdateCardAction) => {
+      return this.cardService.updateCard(action.payload)
+        .map(() => new CardActions.UpdateCardSuccessAction(action.payload))
+        .catch(error => Observable.of(new CardActions.LoadCardListFailureAction(error)));
+    });
+
+  @Effect() updateCardSuccess$: Observable<Action> = this.actions$
+    .ofType(CardActions.ActionTypes.UPDATE_CARD_SUCCESS)
+    .map((action: CardActions.UpdateCardSuccessAction) => {
+      const card = new Card(action.payload);
+      return new CardActions.ChangedAction({ current: card.serialize(), errors: [] });
+    });
+
   @Effect() apiError$: Observable<Action> = this.actions$
     .ofType<
       CardActions.ApiErrorAction |
       CardActions.CreateCardFailureAction |
       CardActions.LoadCardFailureAction |
-      CardActions.LoadCardListFailureAction>(
+      CardActions.LoadCardListFailureAction |
+      CardActions.UpdateCardFailureAction>(
       CardActions.ActionTypes.API_ERROR,
       CardActions.ActionTypes.CREATE_CARD_FAILURE,
       CardActions.ActionTypes.LOAD_CARD_FAILURE,
-      CardActions.ActionTypes.LOAD_CARD_LIST_FAILURE
+      CardActions.ActionTypes.LOAD_CARD_LIST_FAILURE,
+      CardActions.ActionTypes.UPDATE_CARD_FAILURE
     )
     .withLatestFrom(this.store)
     .map(([ action, state ]) => new CardActions.ChangedAction({

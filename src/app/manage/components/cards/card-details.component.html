@@ -1,0 +1,10 @@
+<div *ngIf="card$ | async as card">
+  <h2>Card details component</h2>
+  <pre>{{card | json }}</pre>
+  <button (click)="deleteCard(card.uid)" md-raised-button color="primary">DELETE</button>
+  <a [routerLink]="[ 'edit' ]" md-raised-button>Edit</a>
+</div>
+
+<div *ngIf="cardList$ | async as cardList">
+  <app-card-list [cardList]="cardList" (onDelete)="deleteCard($event)"></app-card-list>
+</div>

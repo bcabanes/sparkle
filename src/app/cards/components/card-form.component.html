@@ -1,0 +1,22 @@
+<h2>Card</h2>
+<form [formGroup]="cardForm" (ngSubmit)="submit()">
+  <div class="form-group form-authentication">
+    <md-form-field class="title-input input-full-width">
+      <input mdInput
+             [formControl]="cardForm.controls.title"
+             type="text"
+             [placeholder]="card.title || 'Card\'s title'">
+    </md-form-field>
+
+    <md-form-field class="conent-input input-full-width">
+      <input mdInput
+             [formControl]="cardForm.controls.content"
+             type="text"
+             [placeholder]="card.content || 'Card\'s content'">
+    </md-form-field>
+
+    <div class="form-btn">
+      <button type="submit" md-raised-button color="primary">Submit</button>
+    </div>
+  </div>
+</form>
