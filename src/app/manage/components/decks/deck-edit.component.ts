@@ -32,10 +32,7 @@ export class DeckEditComponent implements OnInit {
 
   public saveDeck(deck: Deck) {
     if (deck.uid) {
-      console.log('UPDATE DECK ACTION');
-      return;
-      // this.store.dispatch(new DeckActions.UpdateDeckAction(deck));
-      // return this.router.navigate([ '/decks', deck.uid ]);
+      return this.store.dispatch(new DeckActions.UpdateDeckAction(deck));
     }
     this.store.dispatch(new DeckActions.CreateDeckAction(deck.serialize()));
     return this.router.navigate([ '/dashboard' ]);

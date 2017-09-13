@@ -22,6 +22,9 @@ export namespace DeckActions {
     LOAD_DECK_LIST: string;
     LOAD_DECK_LIST_FAILURE: string;
     LOAD_DECK_LIST_SUCCESS: string;
+    UPDATE_DECK: string;
+    UPDATE_DECK_FAILURE: string;
+    UPDATE_DECK_SUCCESS: string;
   }
 
   export const ActionTypes: IDeckAction = {
@@ -39,7 +42,10 @@ export namespace DeckActions {
     LOAD_DECK_SUCCESS     : type(`${CATEGORY} Load deck Success`),
     LOAD_DECK_LIST        : type(`${CATEGORY} Load deck list`),
     LOAD_DECK_LIST_FAILURE: type(`${CATEGORY} Load deck list Failure`),
-    LOAD_DECK_LIST_SUCCESS: type(`${CATEGORY} Load deck list Success`)
+    LOAD_DECK_LIST_SUCCESS: type(`${CATEGORY} Load deck list Success`),
+    UPDATE_DECK           : type(`${CATEGORY} Update deck`),
+    UPDATE_DECK_FAILURE   : type(`${CATEGORY} Update deck Failure`),
+    UPDATE_DECK_SUCCESS   : type(`${CATEGORY} Update deck Success`),
   };
 
   export class ApiErrorAction implements Action {
@@ -202,6 +208,39 @@ export namespace DeckActions {
     }
   }
 
+  export class UpdateDeckAction implements Action {
+    type = ActionTypes.UPDATE_DECK;
+
+    /**
+     *
+     * @param {IDeck} payload
+     */
+    constructor(public payload: IDeck) {
+    }
+  }
+
+  export class UpdateDeckFailureAction implements Action {
+    type = ActionTypes.UPDATE_DECK_FAILURE;
+
+    /**
+     *
+     * @param payload
+     */
+    constructor(public payload: any) {
+    }
+  }
+
+  export class UpdateDeckSuccessAction implements Action {
+    type = ActionTypes.UPDATE_DECK_SUCCESS;
+
+    /**
+     *
+     * @param {IDeck} payload
+     */
+    constructor(public payload: IDeck) {
+    }
+  }
+
   /**
    * Load list of decks.
    */
@@ -215,5 +254,11 @@ export namespace DeckActions {
     CreateDeckSuccessAction |
     LoadDeckAction |
     LoadDeckFailureAction |
-    LoadDeckSuccessAction;
+    LoadDeckSuccessAction |
+    LoadDeckListAction |
+    LoadDeckListFailureAction |
+    LoadDeckListSuccessAction |
+    UpdateDeckAction |
+    UpdateDeckFailureAction |
+    UpdateDeckSuccessAction;
 }

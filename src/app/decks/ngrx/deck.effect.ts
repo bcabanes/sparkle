@@ -77,16 +77,33 @@ export class DeckEffects {
       return new DeckActions.ChangedAction({ list: deckList, errors: [] });
     });
 
+  @Effect() updateDeck$: Observable<Action> = this.actions$
+    .ofType(DeckActions.ActionTypes.UPDATE_DECK)
+    .switchMap((action: DeckActions.UpdateDeckAction) => {
+      return this.deckService.updateDeck(action.payload)
+        .map(() => new DeckActions.UpdateDeckSuccessAction(action.payload))
+        .catch(error => Observable.of(new DeckActions.LoadDeckListFailureAction(error)));
+    });
+
+  @Effect() updateDeckSuccess$: Observable<Action> = this.actions$
+    .ofType(DeckActions.ActionTypes.UPDATE_DECK_SUCCESS)
+    .map((action: DeckActions.UpdateDeckSuccessAction) => {
+      const deck = new Deck(action.payload);
+      return new DeckActions.ChangedAction({ current: deck.serialize(), errors: [] });
+    });
+
   @Effect() apiError$: Observable<Action> = this.actions$
     .ofType<
       DeckActions.ApiErrorAction |
       DeckActions.CreateDeckFailureAction |
       DeckActions.LoadDeckFailureAction |
-      DeckActions.LoadDeckListFailureAction>(
+      DeckActions.LoadDeckListFailureAction |
+      DeckActions.UpdateDeckFailureAction>(
       DeckActions.ActionTypes.API_ERROR,
       DeckActions.ActionTypes.CREATE_DECK_FAILURE,
       DeckActions.ActionTypes.LOAD_DECK_FAILURE,
-      DeckActions.ActionTypes.LOAD_DECK_LIST_FAILURE
+      DeckActions.ActionTypes.LOAD_DECK_LIST_FAILURE,
+      DeckActions.ActionTypes.UPDATE_DECK_FAILURE
     )
     .withLatestFrom(this.store)
     .map(([ action, state ]) => new DeckActions.ChangedAction({
