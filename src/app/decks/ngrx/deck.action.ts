@@ -45,7 +45,7 @@ export namespace DeckActions {
     LOAD_DECK_LIST_SUCCESS: type(`${CATEGORY} Load deck list Success`),
     UPDATE_DECK           : type(`${CATEGORY} Update deck`),
     UPDATE_DECK_FAILURE   : type(`${CATEGORY} Update deck Failure`),
-    UPDATE_DECK_SUCCESS   : type(`${CATEGORY} Update deck Success`),
+    UPDATE_DECK_SUCCESS   : type(`${CATEGORY} Update deck Success`)
   };
 
   export class ApiErrorAction implements Action {
