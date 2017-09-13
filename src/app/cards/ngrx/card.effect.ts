@@ -30,7 +30,7 @@ export class CardEffects {
       return new CardActions.ChangedAction({ current: card.serialize(), errors: [] });
     })
     .withLatestFrom(this.store)
-    .map(([action, state]) => new CardActions.LoadCardListAction(state.card.current.uid));
+    .map(([action, state]) => new CardActions.LoadCardListAction(state.deck.current.uid));
 
   @Effect() deleteCard$: Observable<Action> = this.actions$
     .ofType(CardActions.ActionTypes.DELETE_CARD)
@@ -42,8 +42,7 @@ export class CardEffects {
   @Effect() deleteCardSuccess$: Observable<Action> = this.actions$
     .ofType<CardActions.DeleteCardSuccessAction>(CardActions.ActionTypes.DELETE_CARD_SUCCESS)
     .withLatestFrom(this.store)
-    .map(([ action, state ]) =>
-      new CardActions.LoadCardListAction(state.card.current.uid));
+    .map(([ action, state ]) => new CardActions.LoadCardListAction(state.deck.current.uid));
 
   @Effect() loadCard$: Observable<Action> = this.actions$
     .ofType(CardActions.ActionTypes.LOAD_CARD)
