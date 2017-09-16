@@ -6,7 +6,6 @@ import {
   Route,
   RouterStateSnapshot
 } from '@angular/router';
-import 'rxjs/add/operator/take';
 // app
 import { UserService } from './user.service';
 

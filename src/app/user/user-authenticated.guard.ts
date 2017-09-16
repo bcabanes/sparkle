@@ -6,7 +6,6 @@ import {
   Route,
   RouterStateSnapshot
 } from '@angular/router';
-import 'rxjs/add/operator/take';
 // app
 import { UserService } from './user.service';
 
@@ -21,7 +20,6 @@ export class UserAuthenticatedGuard implements CanActivate, CanLoad {
               routerState: RouterStateSnapshot): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.userService.getCurrentUser()
-        .take(1)
         .subscribe(user => {
           if (user) {
             resolve(true);
