@@ -15,7 +15,7 @@ import 'rxjs/add/operator/withLatestFrom';
 import { UserActions } from './user.action';
 import { UserService } from '../user.service';
 import { IUser, User } from '../user.model';
-import { AppActions, IAppState } from '../../ngrx/app.action';
+import { AppActions } from '../../ngrx/app.action';
 import { UserState } from './user.state';
 
 @Injectable()
@@ -51,8 +51,10 @@ export class UserEffects {
         .map(() => new UserActions.SignOutSuccessAction())
         .catch((error) => Observable.of(new UserActions.SignOutFailureAction(error))));
 
-  @Effect({ dispatch: false }) signOutSuccess$: Observable<Action> = this.actions$
+  @Effect() signOutSuccess$: Observable<Action> = this.actions$
     .ofType(UserActions.ActionTypes.SIGN_IN_REDIRECT, UserActions.ActionTypes.SIGN_OUT_SUCCESS)
+    .map((action: UserActions.SignOutSuccessAction) =>
+      new UserActions.ChangedAction({ current: null, errors: [] }))
     .do(() => this.router.navigate([ '/auth', 'sign-in' ]));
 
   @Effect() apiError$: Observable<Action> = this.actions$

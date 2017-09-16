@@ -21,7 +21,6 @@ export class UserAnonymousGuard implements CanActivate, CanLoad {
               routerState: RouterStateSnapshot): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.userService.getCurrentUser()
-        .take(1)
         .subscribe(user => {
           if (!user) {
             resolve(true);
