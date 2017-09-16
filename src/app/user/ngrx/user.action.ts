@@ -2,6 +2,7 @@ import { Action } from '@ngrx/store';
 // app
 import { type } from '../../shared/helpers/type';
 import { UserState } from './user.state';
+import { IUser } from '../user.model';
 
 export namespace UserActions {
   const CATEGORY = 'User';
@@ -103,9 +104,9 @@ export namespace UserActions {
 
     /**
      *
-     * @param payload
+     * @param {IUser} payload
      */
-    constructor(public payload: any) {
+    constructor(public payload: IUser) {
     }
   }
 
