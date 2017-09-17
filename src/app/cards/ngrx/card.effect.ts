@@ -7,18 +7,21 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/switchMap';
 // app
 import { CardService } from '../card.service';
 import { CardActions } from './card.action';
 import { Card, ICard } from '../card.model';
+import { CardState } from './card.state';
+import { IAppState } from '../../ngrx/app.action';
 
 @Injectable()
 export class CardEffects {
 
   @Effect() createCard$: Observable<Action> = this.actions$
     .ofType(CardActions.ActionTypes.CREATE_CARD)
-    .switchMap((action: CardActions.CreateCardAction) =>
+    .mergeMap((action: CardActions.CreateCardAction) =>
       this.cardService.createCard(action.payload))
         .map((data: ICard) => new CardActions.CreateCardSuccessAction(data))
         .catch(error => Observable.of(new CardActions.CreateCardFailureAction(error)));
@@ -28,13 +31,11 @@ export class CardEffects {
     .map((action: CardActions.CreateCardSuccessAction) => {
       const card = new Card(action.payload);
       return new CardActions.ChangedAction({ current: card.serialize(), errors: [] });
-    })
-    .withLatestFrom(this.store)
-    .map(([action, state]) => new CardActions.LoadCardListAction(state.deck.current.uid));
+    });
 
   @Effect() deleteCard$: Observable<Action> = this.actions$
     .ofType(CardActions.ActionTypes.DELETE_CARD)
-    .switchMap((action: CardActions.DeleteCardAction) =>
+    .mergeMap((action: CardActions.DeleteCardAction) =>
       this.cardService.deleteCard(action.payload))
         .map(data => new CardActions.DeleteCardSuccessAction())
         .catch(error => Observable.of(new CardActions.DeleteCardFailureAction(error)));
@@ -42,7 +43,8 @@ export class CardEffects {
   @Effect() deleteCardSuccess$: Observable<Action> = this.actions$
     .ofType<CardActions.DeleteCardSuccessAction>(CardActions.ActionTypes.DELETE_CARD_SUCCESS)
     .withLatestFrom(this.store)
-    .map(([ action, state ]) => new CardActions.LoadCardListAction(state.deck.current.uid));
+    .map(([ action, store ]: [ CardActions.Actions, IAppState ]) =>
+      new CardActions.LoadCardListAction(store.deck.current.uid));
 
   @Effect() loadCard$: Observable<Action> = this.actions$
     .ofType(CardActions.ActionTypes.LOAD_CARD)
@@ -79,7 +81,7 @@ export class CardEffects {
 
   @Effect() updateCard$: Observable<Action> = this.actions$
     .ofType(CardActions.ActionTypes.UPDATE_CARD)
-    .switchMap((action: CardActions.UpdateCardAction) => {
+    .mergeMap((action: CardActions.UpdateCardAction) => {
       return this.cardService.updateCard(action.payload)
         .map(() => new CardActions.UpdateCardSuccessAction(action.payload))
         .catch(error => Observable.of(new CardActions.LoadCardListFailureAction(error)));
@@ -93,25 +95,17 @@ export class CardEffects {
     });
 
   @Effect() apiError$: Observable<Action> = this.actions$
-    .ofType<
-      CardActions.ApiErrorAction |
-      CardActions.CreateCardFailureAction |
-      CardActions.LoadCardFailureAction |
-      CardActions.LoadCardListFailureAction |
-      CardActions.UpdateCardFailureAction>(
-      CardActions.ActionTypes.API_ERROR,
+    .ofType(CardActions.ActionTypes.API_ERROR,
       CardActions.ActionTypes.CREATE_CARD_FAILURE,
       CardActions.ActionTypes.LOAD_CARD_FAILURE,
       CardActions.ActionTypes.LOAD_CARD_LIST_FAILURE,
-      CardActions.ActionTypes.UPDATE_CARD_FAILURE
-    )
+      CardActions.ActionTypes.UPDATE_CARD_FAILURE)
     .withLatestFrom(this.store)
-    .map(([ action, state ]) => new CardActions.ChangedAction({
-      errors: [ action.payload, ...(state.errors || []) ]
-    }));
+    .map(([ action, state ]: [ CardActions.Actions, IAppState ]) =>
+      new CardActions.ChangedAction({ errors: [ action.payload, ...(state.card.errors || []) ] }));
 
 
   constructor(private actions$: Actions,
               private cardService: CardService,
-              private store: Store<any>) {}
+              private store: Store<IAppState>) {}
 }
