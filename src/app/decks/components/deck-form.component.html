@@ -1,12 +1,53 @@
 <h2>Deck</h2>
 <form [formGroup]="deckForm" (ngSubmit)="submit()">
-  <div class="form-group form-authentication">
+  <div class="form-group form-deck">
     <md-form-field class="title-input input-full-width">
       <input mdInput
              [formControl]="deckForm.controls.title"
              type="text"
              [placeholder]="deck.title || 'Deck\'s title'">
     </md-form-field>
+
+    <md-radio-group [formControl]="deckForm.controls.frequency"
+                    class="frequency-input input-full-width">
+      Deck's intensity
+      <md-radio-button class="example-radio-button" [value]="6">
+        high
+      </md-radio-button>
+      <md-radio-button class="example-radio-button" [value]="4">
+        medium
+      </md-radio-button>
+      <md-radio-button class="example-radio-button" [value]="2">
+        low
+      </md-radio-button>
+    </md-radio-group>
+
+    <md-radio-group [formControl]="deckForm.controls.days"
+                    class="frequency-input input-full-width">
+      Deck's intensity
+      <md-radio-button class="example-radio-button" [value]="6">
+        long
+      </md-radio-button>
+      <md-radio-button class="example-radio-button" [value]="4">
+        medium
+      </md-radio-button>
+      <md-radio-button class="example-radio-button" [value]="2">
+        short
+      </md-radio-button>
+    </md-radio-group>
+
+    <div class="time-interval-input">
+      What is your average day time interval?
+      <md-select placeholder="Deck's start time am" [formControl]="deckForm.controls.startTime">
+        <md-option *ngFor="let time of [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ]"
+                   [value]="time">{{time}}</md-option>
+      </md-select>
+
+      <md-select placeholder="Deck's end time pm" [formControl]="deckForm.controls.endTime">
+        <md-option *ngFor="let time of [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ]"
+                   [value]="time">{{time}}</md-option>
+      </md-select>
+    </div>
 
     <div class="form-btn">
       <button type="submit" md-raised-button color="primary">Submit</button>

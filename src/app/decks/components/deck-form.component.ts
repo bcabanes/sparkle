@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Deck } from '../deck.model';
 
 @Component({
-  selector: 'app-deck-form',
+  selector   : 'app-deck-form',
   templateUrl: './deck-form.component.html'
 })
 export class DeckFormComponent implements OnInit {
@@ -23,12 +23,23 @@ export class DeckFormComponent implements OnInit {
 
   private createDeckForm(): FormGroup {
     return this.formBuilder.group({
-      title   : [ '', [ Validators.required ] ],
+      title    : [ '', [ Validators.required ] ],
+      frequency: [ 4, [ Validators.required, Validators.pattern(/[0-9]*/) ] ],
+      days     : [ 4, [ Validators.required, Validators.pattern(/[0-9]*/) ] ],
+      startTime: [ 8, [ Validators.required, Validators.pattern(/[0-9]*/) ] ],
+      endTime  : [ 8, [ Validators.required, Validators.pattern(/[0-9]*/) ] ]
     });
   }
 
   submit() {
-    const deck = new Deck({ ...this.deck, title: this.deckForm.value.title });
+    const deck = new Deck({
+      ...this.deck,
+      title    : this.deckForm.value.title,
+      frequency: this.deckForm.value.frequency,
+      days     : this.deckForm.value.days,
+      startTime: this.deckForm.value.startTime,
+      endTime  : this.deckForm.value.endTime
+    });
     this.submitted.emit(deck);
   }
 }
