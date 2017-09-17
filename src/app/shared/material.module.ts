@@ -5,6 +5,8 @@ import {
   MdIconModule,
   MdInputModule,
   MdListModule,
+  MdRadioModule,
+  MdSelectModule,
   MdToolbarModule
 } from '@angular/material';
 
@@ -15,6 +17,8 @@ const ComponentModules: any[] = [
   MdIconModule,
   MdInputModule,
   MdListModule,
+  MdRadioModule,
+  MdSelectModule,
   MdToolbarModule
 ];
 
