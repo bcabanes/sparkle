@@ -25,20 +25,25 @@ export class DeckFormComponent implements OnInit {
     return this.formBuilder.group({
       title    : [ '', [ Validators.required ] ],
       frequency: [ 4, [ Validators.required, Validators.pattern(/[0-9]*/) ] ],
+      isActive : [ true, [ Validators.required ] ],
       days     : [ 4, [ Validators.required, Validators.pattern(/[0-9]*/) ] ],
       startTime: [ 8, [ Validators.required, Validators.pattern(/[0-9]*/) ] ],
-      endTime  : [ 8, [ Validators.required, Validators.pattern(/[0-9]*/) ] ]
+      endTime  : [ 20, [ Validators.required, Validators.pattern(/[0-9]*/) ] ]
     });
   }
 
   submit() {
+    const dayTime = this.deckForm.value.endTime - this.deckForm.value.startTime;
     const deck = new Deck({
       ...this.deck,
-      title    : this.deckForm.value.title,
-      frequency: this.deckForm.value.frequency,
-      days     : this.deckForm.value.days,
-      startTime: this.deckForm.value.startTime,
-      endTime  : this.deckForm.value.endTime
+      title       : this.deckForm.value.title,
+      isActive    : this.deckForm.value.isActive,
+      frequency   : this.deckForm.value.frequency,
+      days        : this.deckForm.value.days,
+      ratio       : dayTime / this.deckForm.value.frequency,
+      startTime   : this.deckForm.value.startTime,
+      endTime     : this.deckForm.value.endTime,
+      lastAnswered: Date.now()
     });
     this.submitted.emit(deck);
   }

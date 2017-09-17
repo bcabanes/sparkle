@@ -2,8 +2,11 @@ export interface IDeck {
   title: string;
   frequency: number;
   days: number;
-  startTime: string;
-  endTime: string;
+  ratio: number;
+  startTime: number;
+  endTime: number;
+  lastAnswered: number;
+  isActive: boolean;
   uid: string;
 }
 
@@ -11,8 +14,11 @@ export class Deck implements IDeck {
   title = null;
   frequency = null;
   days = null;
+  ratio = null;
   startTime = null;
   endTime = null;
+  lastAnswered = null;
+  isActive = false;
   uid = null;
 
   constructor(object: any) {
