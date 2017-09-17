@@ -15,8 +15,7 @@ import 'rxjs/add/operator/withLatestFrom';
 import { UserActions } from './user.action';
 import { UserService } from '../user.service';
 import { IUser, User } from '../user.model';
-import { AppActions } from '../../ngrx/app.action';
-import { UserState } from './user.state';
+import { AppActions, IAppState } from '../../ngrx/app.action';
 
 @Injectable()
 export class UserEffects {
@@ -63,11 +62,11 @@ export class UserEffects {
       UserActions.ActionTypes.SIGN_UP_FAILURE,
       UserActions.ActionTypes.SIGN_OUT_FAILURE)
     .withLatestFrom(this.store)
-    .map(([ action, state ]: [ UserActions.Actions, UserState.IState ]) =>
-      new UserActions.ChangedAction({ errors: action.payload }));
+    .map(([ action, state ]: [ UserActions.Actions, IAppState ]) =>
+      new UserActions.ChangedAction({ errors: [ action.payload, ...(state.user.errors || []) ] }));
 
   @Effect() init$: Observable<Action> = this.actions$
-    .ofType<UserActions.InitAction>(UserActions.ActionTypes.INIT)
+    .ofType(UserActions.ActionTypes.INIT)
     .startWith(new UserActions.InitAction())
     .switchMap((action: UserActions.InitAction) =>
       this.userService.getCurrentUser()
@@ -81,7 +80,7 @@ export class UserEffects {
 
   constructor(private actions$: Actions,
               private router: Router,
-              private store: Store<UserState.IState>,
+              private store: Store<IAppState>,
               private userService: UserService) {
   }
 }
