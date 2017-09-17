@@ -7,6 +7,7 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/switchMap';
 // app
 import { DeckService } from '../deck.service';
@@ -18,7 +19,7 @@ export class DeckEffects {
 
   @Effect() createDeck$: Observable<Action> = this.actions$
     .ofType(DeckActions.ActionTypes.CREATE_DECK)
-    .switchMap((action: DeckActions.CreateDeckAction) =>
+    .mergeMap((action: DeckActions.CreateDeckAction) =>
       this.deckService.createDeck(action.payload))
         .map(data => new DeckActions.CreateDeckSuccessAction(data))
         .catch(error => Observable.of(new DeckActions.CreateDeckFailureAction(error)));
@@ -28,13 +29,11 @@ export class DeckEffects {
     .map((action: DeckActions.CreateDeckSuccessAction) => {
       const deck = new Deck(action.payload);
       return new DeckActions.ChangedAction({ current: deck.serialize(), errors: [] });
-    })
-    .switchMap((action: DeckActions.ChangedAction) =>
-      Observable.of(new DeckActions.LoadDeckListAction()));
+    });
 
   @Effect() deleteDeck$: Observable<Action> = this.actions$
     .ofType(DeckActions.ActionTypes.DELETE_DECK)
-    .switchMap((action: DeckActions.DeleteDeckAction) =>
+    .mergeMap((action: DeckActions.DeleteDeckAction) =>
       this.deckService.deleteDeck(action.payload))
         .map(data => new DeckActions.DeleteDeckSuccessAction())
         .catch(error => Observable.of(new DeckActions.DeleteDeckFailureAction(error)));
@@ -93,18 +92,11 @@ export class DeckEffects {
     });
 
   @Effect() apiError$: Observable<Action> = this.actions$
-    .ofType<
-      DeckActions.ApiErrorAction |
-      DeckActions.CreateDeckFailureAction |
-      DeckActions.LoadDeckFailureAction |
-      DeckActions.LoadDeckListFailureAction |
-      DeckActions.UpdateDeckFailureAction>(
-      DeckActions.ActionTypes.API_ERROR,
+    .ofType(DeckActions.ActionTypes.API_ERROR,
       DeckActions.ActionTypes.CREATE_DECK_FAILURE,
       DeckActions.ActionTypes.LOAD_DECK_FAILURE,
       DeckActions.ActionTypes.LOAD_DECK_LIST_FAILURE,
-      DeckActions.ActionTypes.UPDATE_DECK_FAILURE
-    )
+      DeckActions.ActionTypes.UPDATE_DECK_FAILURE)
     .withLatestFrom(this.store)
     .map(([ action, state ]) => new DeckActions.ChangedAction({
       errors: [ action.payload, ...(state.errors || []) ]
