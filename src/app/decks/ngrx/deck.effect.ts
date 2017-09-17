@@ -13,6 +13,7 @@ import 'rxjs/add/operator/switchMap';
 import { DeckService } from '../deck.service';
 import { DeckActions } from './deck.action';
 import { Deck, IDeck } from '../deck.model';
+import { IAppState } from '../../ngrx/app.action';
 
 @Injectable()
 export class DeckEffects {
@@ -78,7 +79,7 @@ export class DeckEffects {
 
   @Effect() updateDeck$: Observable<Action> = this.actions$
     .ofType(DeckActions.ActionTypes.UPDATE_DECK)
-    .switchMap((action: DeckActions.UpdateDeckAction) => {
+    .mergeMap((action: DeckActions.UpdateDeckAction) => {
       return this.deckService.updateDeck(action.payload)
         .map(() => new DeckActions.UpdateDeckSuccessAction(action.payload))
         .catch(error => Observable.of(new DeckActions.LoadDeckListFailureAction(error)));
@@ -98,12 +99,11 @@ export class DeckEffects {
       DeckActions.ActionTypes.LOAD_DECK_LIST_FAILURE,
       DeckActions.ActionTypes.UPDATE_DECK_FAILURE)
     .withLatestFrom(this.store)
-    .map(([ action, state ]) => new DeckActions.ChangedAction({
-      errors: [ action.payload, ...(state.errors || []) ]
-    }));
+    .map(([ action, state ]: [ DeckActions.Actions, IAppState ]) =>
+      new DeckActions.ChangedAction({ errors: [ action.payload, ...(state.deck.errors || []) ] }));
 
 
   constructor(private actions$: Actions,
               private deckService: DeckService,
-              private store: Store<any>) {}
+              private store: Store<IAppState>) {}
 }
