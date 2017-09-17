@@ -1,10 +1,18 @@
 export interface IDeck {
   title: string;
+  frequency: number;
+  days: number;
+  startTime: string;
+  endTime: string;
   uid: string;
 }
 
 export class Deck implements IDeck {
   title = null;
+  frequency = null;
+  days = null;
+  startTime = null;
+  endTime = null;
   uid = null;
 
   constructor(object: any) {
