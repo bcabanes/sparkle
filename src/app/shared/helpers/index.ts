@@ -1,3 +1,3 @@
 export * from './custom-router-state-serializer';
-export * from './firebase-object-to-array';
+export * from './action-type-filter';
 export * from './type';
