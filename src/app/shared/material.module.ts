@@ -7,6 +7,7 @@ import {
   MdListModule,
   MdRadioModule,
   MdSelectModule,
+  MdSlideToggleModule,
   MdToolbarModule
 } from '@angular/material';
 
@@ -19,6 +20,7 @@ const ComponentModules: any[] = [
   MdListModule,
   MdRadioModule,
   MdSelectModule,
+  MdSlideToggleModule,
   MdToolbarModule
 ];
 
