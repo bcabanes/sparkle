@@ -1,2 +1,4 @@
-<h2>Card update component</h2>
-<app-card-form [card]="card$ | async" (submitted)="saveCard($event)"></app-card-form>
+<div class="card-edit-container">
+  <app-card-form [card]="card$ | async" (submitted)="saveCard($event)"></app-card-form>
+</div>
+<!-- /.card-edit-container -->
