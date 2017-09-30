@@ -1,0 +1,43 @@
+.statistic-count {
+  display     : flex;
+  align-items : center;
+
+  .icon {
+    align-items     : center;
+    background      : #3F51B5;
+    border-radius   : 50%;
+    color           : #FFFFFF;
+    display         : flex;
+    height          : 48px;
+    justify-content : center;
+    line-height     : 48px;
+    text-align      : center;
+    width           : 48px;
+  }
+
+  .description {
+    margin-left : 26px;
+
+    strong {
+      font-size   : 150%;
+      font-weight : normal;
+    }
+    small {
+      display : block;
+      opacity : 0.8;
+    }
+  }
+}
+
+.statistic-count.indigo {
+  .icon { background: #3F51B5; }
+  .strong { color: #3F51B5; }
+}
+.statistic-count.blue {
+  .icon { background: #2196F3; }
+  .strong { color: #2196F3; }
+}
+.statistic-count.green {
+  .icon { background: #0CC2AA; }
+  .strong { color: #0CC2AA; }
+}
