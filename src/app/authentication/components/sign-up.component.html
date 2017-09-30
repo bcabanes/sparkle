@@ -1,6 +1,10 @@
-<h2>Sign Up</h2>
-<form [formGroup]="signUpForm" (ngSubmit)="signUp()">
-  <div class="form-group form-authentication">
+<md-card>
+  <md-card-header>
+    <h4>Sign up to your Sparkle account</h4>
+  </md-card-header>
+
+  <form [formGroup]="signUpForm" (ngSubmit)="signUp()">
+    <md-card-content>
       <md-form-field class="email-input input-full-width">
         <input mdInput
                [formControl]="signUpForm.controls.email"
@@ -15,9 +19,12 @@
                placeholder="Your password">
       </md-form-field>
 
-    <div class="form-btn">
+      <md-checkbox [formControl]="signUpForm.controls.terms">
+        Agree the terms and policy</md-checkbox>
+    </md-card-content>
+    <md-card-actions>
       <a (click)="router.navigate(['auth', 'sign-in'])" md-button>Already have an account?</a>
       <button type="submit" md-raised-button color="primary">Sign up</button>
-    </div>
-  </div>
-</form>
+    </md-card-actions>
+  </form>
+</md-card>

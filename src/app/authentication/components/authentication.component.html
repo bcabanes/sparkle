@@ -1,9 +1,10 @@
 <div class="authentication-container">
-  <div class="authentication-row">
-    <p>{{ (errors | async)?.message }}</p>
-  </div>
+  <h1>Sparkle</h1>
   <div class="authentication-row">
     <router-outlet></router-outlet>
+  </div>
+  <div class="authentication-row">
+    <p>{{ (errors | async)?.message }}</p>
   </div>
   <!-- /.authentication-row -->
 </div>
