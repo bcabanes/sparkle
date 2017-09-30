@@ -3,13 +3,11 @@
 
   <span class="toolbar-spacer"></span>
 
-  <button *ngIf="!currentUser$ | async"
-          (click)="router.navigate(['auth', 'sign-in'])"
-          md-button>Go to SignIn</button>
-
-  <button *ngIf="currentUser$ | async"
-          (click)="router.navigate(['dashboard'])"
-          md-button>Go to Dashboard</button>
+  <a *ngIf="currentUser$ | async"
+     class="menu-link"
+     routerLink="/dashboard"
+     routerLinkActive="active-link"
+     md-button>Dashboard</a>
 
   <button md-icon-button>
     <md-icon>notifications</md-icon>

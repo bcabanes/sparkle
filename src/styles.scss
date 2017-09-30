@@ -6,6 +6,9 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+.menu-link.active-link .mat-button-focus-overlay {
+  opacity: 1;
+}
 
 .input-full-width {
   width: 100%;
