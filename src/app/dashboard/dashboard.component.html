@@ -1,6 +1,43 @@
-<app-deck-list [deckList]="deckList$ | async"
-               (onDelete)="deleteDeck($event)"></app-deck-list>
+<div class="dashboard-container">
+  <div class="statistic-count-container">
+    <app-statistic-count [value]="(deckList$ | async)?.length"
+                         color="green"
+                         icon="D"
+                         entity="decks"
+                         action="created card in total"></app-statistic-count>
+    <app-statistic-count [value]="0"
+                         color="blue"
+                         icon="D"
+                         entity="decks"
+                         action="activated for learning"></app-statistic-count>
+    <app-statistic-count [value]="0"
+                         color="indigo"
+                         icon="T"
+                         entity="tags"
+                         action="created in total"></app-statistic-count>
+  </div>
+  <!-- /.container-row -->
 
-<a [routerLink]="[ '/manage', 'decks', 'new' ]"
-   md-raised-button
-   color="primary">Create deck</a>
+  <div class="deck-list-container">
+    <md-card>
+      <md-card-header>
+        <h2>My list</h2>
+      </md-card-header>
+      <md-card-content>
+        <app-deck-list [deckList]="deckList$ | async"
+                       (onDelete)="deleteDeck($event)"></app-deck-list>
+      </md-card-content>
+      <md-card-actions>
+        <a [routerLink]="[ '/manage', 'decks', 'new' ]"
+           md-raised-button
+           color="primary"><md-icon>create_new_folder</md-icon> Create a new deck</a>
+      </md-card-actions>
+    </md-card>
+    <div class="all-decks">
+
+    </div>
+    <!-- /.all-decks -->
+  </div>
+  <!-- /.container-row -->
+</div>
+<!-- /.container -->
