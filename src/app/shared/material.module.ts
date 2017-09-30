@@ -2,9 +2,12 @@ import { NgModule } from '@angular/core';
 
 import {
   MdButtonModule,
+  MdCardModule,
+  MdCheckboxModule,
   MdIconModule,
   MdInputModule,
   MdListModule,
+  MdMenuModule,
   MdRadioModule,
   MdSelectModule,
   MdSlideToggleModule,
@@ -15,9 +18,12 @@ import 'hammerjs';
 
 const ComponentModules: any[] = [
   MdButtonModule,
+  MdCardModule,
+  MdCheckboxModule,
   MdIconModule,
   MdInputModule,
   MdListModule,
+  MdMenuModule,
   MdRadioModule,
   MdSelectModule,
   MdSlideToggleModule,
