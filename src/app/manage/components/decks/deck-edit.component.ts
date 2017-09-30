@@ -11,10 +11,10 @@ import { DeckActions } from '../../../decks/ngrx/deck.action';
 import { Deck, IDeck } from '../../../decks/deck.model';
 import { ofTypeFilter } from '../../../shared/helpers/action-type-filter';
 
-
 @Component({
   selector: 'app-deck-edit',
-  templateUrl: './deck-edit.component.html'
+  templateUrl: './deck-edit.component.html',
+  styleUrls: [ './deck-edit.component.scss' ]
 })
 export class DeckEditComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
@@ -38,7 +38,9 @@ export class DeckEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   public saveDeck(deck: Deck) {

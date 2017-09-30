@@ -1,2 +1,5 @@
-<h2>Deck update component</h2>
-<app-deck-form [deck]="deck$ | async" (submitted)="saveDeck($event)"></app-deck-form>
+<div class="deck-edit-container">
+  <app-deck-form [deck]="deck$ | async" (submitted)="saveDeck($event)"></app-deck-form>
+</div>
+<!-- /.deck-edit-container -->
+

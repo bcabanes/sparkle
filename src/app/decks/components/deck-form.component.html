@@ -1,67 +1,63 @@
-<h2>Deck</h2>
-<form [formGroup]="deckForm" (ngSubmit)="submit()">
-  <div class="form-group form-deck">
-    <md-form-field class="title-input input-full-width">
-      <input mdInput
-             [formControl]="deckForm.controls.title"
-             type="text"
-             [placeholder]="deck.title || 'Deck\'s title'">
-    </md-form-field>
+<md-card>
+  <md-card-header>
+    <h2>Edit a deck</h2>
+  </md-card-header>
 
-    <div>
-      <md-slide-toggle [formControl]="deckForm.controls.isActive"
-                       class="is-active-input">
-        Activate the deck
-      </md-slide-toggle>
-    </div>
+  <form [formGroup]="deckForm" (ngSubmit)="submit()">
+    <md-card-content>
+      <md-form-field class="title-input input-full-width">
+        <input mdInput
+               [formControl]="deckForm.controls.title"
+               type="text"
+               [placeholder]="deck.title || 'Deck\'s title'">
+      </md-form-field>
 
-    <div>
-      <md-radio-group [formControl]="deckForm.controls.frequency"
-                      class="frequency-input input-full-width">
-        Deck's intensity
-        <md-radio-button class="example-radio-button" [value]="6">
-          high
-        </md-radio-button>
-        <md-radio-button class="example-radio-button" [value]="4">
-          medium
-        </md-radio-button>
-        <md-radio-button class="example-radio-button" [value]="2">
-          low
-        </md-radio-button>
-      </md-radio-group>
-    </div>
+      <div class="input-container">
+        <md-select placeholder="Deck's intensity"
+                   [formControl]="deckForm.controls.frequency"
+                   class="input-full-width">
+          <md-option [value]="6">high</md-option>
+          <md-option [value]="4">medium</md-option>
+          <md-option [value]="2">low</md-option>
+        </md-select>
+      </div>
 
-    <div>
-      <md-radio-group [formControl]="deckForm.controls.days"
-                      class="frequency-input input-full-width">
-        Deck's time
-        <md-radio-button class="example-radio-button" [value]="6">
-          long
-        </md-radio-button>
-        <md-radio-button class="example-radio-button" [value]="4">
-          medium
-        </md-radio-button>
-        <md-radio-button class="example-radio-button" [value]="2">
-          short
-        </md-radio-button>
-      </md-radio-group>
-    </div>
+      <div class="input-container">
+        <md-select placeholder="Deck's time"
+                   [formControl]="deckForm.controls.days"
+                   class="input-full-width">
+          <md-option [value]="6">long</md-option>
+          <md-option [value]="4">medium</md-option>
+          <md-option [value]="2">short</md-option>
+        </md-select>
+      </div>
 
-    <div class="time-interval-input">
-      What is your average day time interval?
-      <md-select placeholder="Deck's start time (am)" [formControl]="deckForm.controls.startTime">
-        <md-option *ngFor="let time of [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ]"
-                   [value]="time">{{time}}</md-option>
-      </md-select>
+      <div class="input-container">
+        <p>What is your average day time interval?</p>
+        <md-select placeholder="Deck's start time (am)"
+                   [formControl]="deckForm.controls.startTime">
+          <md-option *ngFor="let time of [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ]"
+                     [value]="time">{{time}}
+          </md-option>
+        </md-select>
 
-      <md-select placeholder="Deck's end time (pm)" [formControl]="deckForm.controls.endTime">
-        <md-option *ngFor="let time of [ 13, 14, 15, 16, 17, 18, 19, 20, 21 ]"
-                   [value]="time">{{time}}</md-option>
-      </md-select>
-    </div>
+        <md-select placeholder="Deck's end time (pm)"
+                   [formControl]="deckForm.controls.endTime">
+          <md-option *ngFor="let time of [ 13, 14, 15, 16, 17, 18, 19, 20, 21 ]"
+                     [value]="time">{{time}}
+          </md-option>
+        </md-select>
+      </div>
 
-    <div class="form-btn">
+      <div class="input-container">
+        <md-slide-toggle [formControl]="deckForm.controls.isActive"
+                         class="input-full-width">
+          Activate the deck
+        </md-slide-toggle>
+      </div>
+    </md-card-content>
+    <md-card-actions>
       <button type="submit" md-raised-button color="primary">Submit</button>
-    </div>
-  </div>
-</form>
+    </md-card-actions>
+  </form>
+</md-card>
