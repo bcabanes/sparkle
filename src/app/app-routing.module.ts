@@ -25,6 +25,12 @@ const routes: Routes = [
     component: CommonLayoutComponent,
     loadChildren: 'app/manage/manage.module#ManageModule'
   },
+  {
+    path: 'viewer',
+    canActivate: [ UserAuthenticatedGuard ],
+    component: CommonLayoutComponent,
+    loadChildren: 'app/viewer/viewer.module#ViewerModule'
+  },
   { path: '**', redirectTo: 'auth' }
 ];
 
