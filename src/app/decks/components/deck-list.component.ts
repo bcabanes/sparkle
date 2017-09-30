@@ -5,7 +5,6 @@ import { IDeck } from '../deck.model';
   selector: 'app-deck-list',
   template: `
     <md-list>
-      <h3 md-subheader>Deck list</h3>
       <md-list-item *ngFor="let deck of deckList">
         <md-icon md-list-icon>note</md-icon>
         <h4 md-line>{{deck.title}}</h4>
