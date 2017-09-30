@@ -10,8 +10,18 @@
   <button *ngIf="currentUser$ | async"
           (click)="router.navigate(['dashboard'])"
           md-button>Go to Dashboard</button>
-  <button *ngIf="currentUser$ | async"
-          (click)="signOut()"
-          md-button>Sign out</button>
+
+  <button md-icon-button>
+    <md-icon>notifications</md-icon>
+    <span class="notification-number">5</span>
+  </button>
+  <button md-icon-button
+          [mdMenuTriggerFor]="profileMenu">
+    <app-profile-picture></app-profile-picture>
+  </button>
+  <md-menu #profileMenu="mdMenu">
+    <button md-menu-item>Profile</button>
+    <button md-menu-item (click)="signOut()">Sign out</button>
+  </md-menu>
 
 </md-toolbar>
