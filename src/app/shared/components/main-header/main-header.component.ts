@@ -16,7 +16,7 @@ export class MainHeaderComponent {
   currentUser$: Observable<IUser>;
 
   constructor(public router: Router, private store: Store<IAppState>) {
-    this.currentUser$ = this.store.select(s => s.user);
+    this.currentUser$ = this.store.select(s => s.user.current);
   }
 
   public signOut() {

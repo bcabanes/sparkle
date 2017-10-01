@@ -15,10 +15,13 @@
   </button>
   <button md-icon-button
           [mdMenuTriggerFor]="profileMenu">
-    <app-profile-picture></app-profile-picture>
+    <app-profile-picture [pictureUrl]="(currentUser$ | async)?.photoURL"></app-profile-picture>
   </button>
   <md-menu #profileMenu="mdMenu">
-    <button md-menu-item>Profile</button>
+    <a class="menu-link"
+       routerLink="/profile/edit"
+       routerLinkActive="active-link"
+       md-menu-item>Profile</a>
     <button md-menu-item (click)="signOut()">Sign out</button>
   </md-menu>
 
