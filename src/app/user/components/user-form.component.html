@@ -1,0 +1,44 @@
+<md-card>
+  <md-card-header>
+    <h2>Edit a User</h2>
+  </md-card-header>
+
+  <form [formGroup]="userForm" (ngSubmit)="submit()">
+    <md-card-content>
+      <md-form-field class="display-name-input input-full-width">
+        <input mdInput
+               [formControl]="userForm.controls.displayName"
+               type="text"
+               placeholder="Display name">
+      </md-form-field>
+
+      <md-form-field class="email-input input-full-width">
+        <input mdInput
+               [formControl]="userForm.controls.email"
+               type="email"
+               placeholder="Email">
+      </md-form-field>
+
+      <md-form-field class="photo-url-input input-full-width">
+        <input mdInput
+               [formControl]="userForm.controls.photoURL"
+               type="text"
+               placeholder="Photo url">
+      </md-form-field>
+
+      <md-form-field class="phone-number-input input-full-width">
+        <input mdInput
+               [formControl]="userForm.controls.phoneNumber"
+               type="tel"
+               placeholder="Phone number">
+      </md-form-field>
+    </md-card-content>
+
+    <md-card-actions>
+      <button type="submit"
+              md-raised-button
+              [disabled]="userForm.invalid"
+              color="primary">Submit</button>
+    </md-card-actions>
+  </form>
+</md-card>

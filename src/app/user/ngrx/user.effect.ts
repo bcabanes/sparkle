@@ -56,11 +56,24 @@ export class UserEffects {
       new UserActions.ChangedAction({ current: null, errors: [] }))
     .do(() => this.router.navigate([ '/auth', 'sign-in' ]));
 
+  @Effect() update$: Observable<Action> = this.actions$
+    .ofType(UserActions.ActionTypes.UPDATE)
+    .exhaustMap((action: UserActions.UpdateAction) => Observable.fromPromise(
+      this.userService.update(action.payload))
+      .map((user: IUser) => new UserActions.UpdateSuccessAction(user))
+      .catch((error) => Observable.of(new UserActions.UpdateFailureAction(error))));
+
+  @Effect() updateSuccess$: Observable<Action> = this.actions$
+    .ofType(UserActions.ActionTypes.UPDATE_SUCCESS)
+    .map((action: UserActions.UpdateSuccessAction) =>
+      new UserActions.ChangedAction({ current: action.payload, errors: [] }));
+
   @Effect() apiError$: Observable<Action> = this.actions$
     .ofType(UserActions.ActionTypes.API_ERROR,
       UserActions.ActionTypes.SIGN_IN_FAILURE,
       UserActions.ActionTypes.SIGN_UP_FAILURE,
-      UserActions.ActionTypes.SIGN_OUT_FAILURE)
+      UserActions.ActionTypes.SIGN_OUT_FAILURE,
+      UserActions.ActionTypes.UPDATE_FAILURE)
     .withLatestFrom(this.store)
     .map(([ action, state ]: [ UserActions.Actions, IAppState ]) =>
       new UserActions.ChangedAction({ errors: [ action.payload, ...(state.user.errors || []) ] }));

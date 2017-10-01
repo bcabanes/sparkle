@@ -23,6 +23,8 @@ export namespace UserActions {
     SIGN_UP_FAILURE: string;
     SIGN_UP_SUCCESS: string;
     UPDATE: string;
+    UPDATE_FAILURE: string;
+    UPDATE_SUCCESS: string;
   }
 
   export const ActionTypes: IUserActions = {
@@ -40,7 +42,9 @@ export namespace UserActions {
     SIGN_UP         : type(`${CATEGORY} Sign up`),
     SIGN_UP_FAILURE : type(`${CATEGORY} Sign up Failure`),
     SIGN_UP_SUCCESS : type(`${CATEGORY} Sign up Finish`),
-    UPDATE          : type(`${CATEGORY} Update`)
+    UPDATE          : type(`${CATEGORY} Update`),
+    UPDATE_FAILURE  : type(`${CATEGORY} Update Failure`),
+    UPDATE_SUCCESS  : type(`${CATEGORY} Update Success`)
   };
 
   export class ApiErrorAction implements Action {
@@ -139,6 +143,10 @@ export namespace UserActions {
   export class SignUpAction implements Action {
     type = ActionTypes.SIGN_UP;
 
+    /**
+     *
+     * @param {{email: string; password: string}} payload
+     */
     constructor(public payload: { email: string, password: string }) {
     }
   }
@@ -157,7 +165,44 @@ export namespace UserActions {
   export class SignUpSuccessAction implements Action {
     type = ActionTypes.SIGN_UP_SUCCESS;
 
+    /**
+     *
+     * @param payload
+     */
     constructor(public payload: any) {
+    }
+  }
+
+  export class UpdateAction implements Action {
+    type = ActionTypes.UPDATE;
+
+    /**
+     *
+     * @param {IUser} payload
+     */
+    constructor(public payload: IUser) {
+    }
+  }
+
+  export class UpdateFailureAction implements Action {
+    type = ActionTypes.UPDATE_FAILURE;
+
+    /**
+     *
+     * @param payload
+     */
+    constructor(public payload: any) {
+    }
+  }
+
+  export class UpdateSuccessAction implements Action {
+    type = ActionTypes.UPDATE_SUCCESS;
+
+    /**
+     *
+     * @param {IUser} payload
+     */
+    constructor(public payload: IUser) {
     }
   }
 
@@ -171,5 +216,8 @@ export namespace UserActions {
     SignInSuccessAction |
     SignUpAction |
     SignUpFailureAction |
-    SignUpSuccessAction;
+    SignUpSuccessAction |
+    UpdateAction |
+    UpdateFailureAction |
+    UpdateSuccessAction;
 }
