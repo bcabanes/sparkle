@@ -31,6 +31,12 @@ const routes: Routes = [
     component: CommonLayoutComponent,
     loadChildren: 'app/viewer/viewer.module#ViewerModule'
   },
+  {
+    path: 'profile',
+    canActivate: [ UserAuthenticatedGuard ],
+    component: CommonLayoutComponent,
+    loadChildren: 'app/profile/profile.module#ProfileModule'
+  },
   { path: '**', redirectTo: 'auth' }
 ];
 
