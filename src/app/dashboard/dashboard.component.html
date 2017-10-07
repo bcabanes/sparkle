@@ -5,7 +5,7 @@
                          icon="D"
                          entity="decks"
                          action="created card in total"></app-statistic-count>
-    <app-statistic-count [value]="0"
+    <app-statistic-count [value]="(activatedDeckList$ | async)?.length"
                          color="blue"
                          icon="D"
                          entity="decks"
