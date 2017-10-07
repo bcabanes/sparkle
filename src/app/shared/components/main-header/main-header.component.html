@@ -11,7 +11,7 @@
 
   <button md-icon-button>
     <md-icon>notifications</md-icon>
-    <span class="notification-number">5</span>
+    <span class="notification-number">{{(answerableDeckList$ | async).length}}</span>
   </button>
   <button md-icon-button
           [mdMenuTriggerFor]="profileMenu">

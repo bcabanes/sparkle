@@ -61,7 +61,7 @@ export class DeckService {
       .first();
   }
 
-  private isDeckAnswerable(deck: IDeck): boolean {
+  public isDeckAnswerable(deck: IDeck): boolean {
     const hoursIndicator: number = new Date().getHours();
     if (deck.startTime < hoursIndicator && hoursIndicator < deck.endTime) {
       const now: number = Date.now();

@@ -6,6 +6,8 @@ import { Observable } from 'rxjs/Observable';
 // app
 import { IUser } from '../../../user/user.model';
 import { UserActions } from '../../../user/ngrx/user.action';
+import { IDeck } from '../../../decks/deck.model';
+import { DeckService } from '../../../decks/deck.service';
 
 @Component({
   selector: 'app-main-header',
@@ -13,10 +15,15 @@ import { UserActions } from '../../../user/ngrx/user.action';
   styleUrls: [ './main-header.component.scss' ]
 })
 export class MainHeaderComponent {
+  answerableDeckList$: Observable<IDeck[]>;
   currentUser$: Observable<IUser>;
 
-  constructor(public router: Router, private store: Store<IAppState>) {
+  constructor(private deckService: DeckService,
+              public router: Router,
+              private store: Store<IAppState>) {
     this.currentUser$ = this.store.select(s => s.user.current);
+    this.answerableDeckList$ = this.store.select(s => s.deck.list)
+      .map(deckList => deckList.filter(deck => this.deckService.isDeckAnswerable(deck)));
   }
 
   public signOut() {
