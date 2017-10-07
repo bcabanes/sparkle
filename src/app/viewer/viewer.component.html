@@ -1,8 +1,23 @@
-<p>Viewer component template</p>
-<pre>
-  {{ deck$ | async | json }}
-</pre>
+<div class="viewer-container">
+  <div class="deck-info">
+    <md-card>
+      <pre>
+        {{ deck$ | async | json }}
+      </pre>
+    </md-card>
+  </div>
+  <!-- /.deck-info -->
 
-<pre>
-  {{ cardList$ | async | json }}
-</pre>
+  <div class="card-list-container">
+    <md-card *ngFor="let card of cardList$ | async">
+      <md-card-header>
+        <h2>{{card.title}}</h2>
+      </md-card-header>
+      <md-card-content>
+        <p>{{card.content}}</p>
+      </md-card-content>
+    </md-card>
+  </div>
+  <!-- /.card-list -->
+</div>
+<!-- /.viewer-container -->
