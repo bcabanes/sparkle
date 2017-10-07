@@ -1,11 +1,26 @@
-<div *ngIf="deck$ | async as deck">
-  <h2>Deck details component</h2>
-  <pre>{{deck | json }}</pre>
-  <button (click)="deleteDeck(deck.uid)" md-raised-button color="primary">DELETE</button>
-  <a [routerLink]="[ 'edit' ]" md-raised-button>Edit</a>
-  <a [routerLink]="[ '/manage', 'cards', 'new' ]" md-raised-button color="accent">Create card</a>
-</div>
+<div class="deck-details-container">
+  <div *ngIf="deck$ | async as deck">
+    <md-card>
+      <md-card-header>
+        <h2>{{deck.title}}</h2>
+      </md-card-header>
+      <md-card-content>
+        <pre>{{deck | json }}</pre>
+      </md-card-content>
+      <md-card-actions>
+        <button (click)="deleteDeck(deck.uid)" md-raised-button color="primary">DELETE</button>
+        <a [routerLink]="[ 'edit' ]" md-raised-button>Edit</a>
+        <a [routerLink]="[ '/manage', 'cards', 'new' ]" md-raised-button color="accent">Create card</a>
+      </md-card-actions>
+    </md-card>
+  </div>
 
-<div *ngIf="cardList$ | async as cardList">
-  <app-card-list [cardList]="cardList" (onDelete)="deleteCard($event)"></app-card-list>
+  <div *ngIf="cardList$ | async as cardList" class="card-list-container">
+    <md-card>
+      <md-card-content>
+        <app-card-list [cardList]="cardList" (onDelete)="deleteCard($event)"></app-card-list>
+      </md-card-content>
+    </md-card>
+  </div>
 </div>
+<!-- /.deck-details-container -->

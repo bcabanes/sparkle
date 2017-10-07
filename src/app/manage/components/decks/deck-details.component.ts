@@ -13,7 +13,8 @@ import { Card, ICard } from '../../../cards/card.model';
 
 @Component({
   selector: 'app-deck-details',
-  templateUrl: 'deck-details.component.html'
+  templateUrl: 'deck-details.component.html',
+  styleUrls: [ './deck-details.component.scss' ]
 })
 export class DeckDetailsComponent implements OnInit {
   deck$: Observable<IDeck>;
